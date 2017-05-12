@@ -110,7 +110,7 @@ OSCP Course Review
 
 -   [*http://h.ackack.net/cheat-sheets/netcat*](http://h.ackack.net/cheat-sheets/netcat)
 
-<span id="_u0jmfst1vd5j" class="anchor"><span id="_Toc480741800" class="anchor"></span></span>Essentials
+Essentials
 ========================================================================================================
 
 -   Exploit-db  
@@ -135,3 +135,22 @@ OSCP Course Review
 
 -   Metasploit Unleashed - free course on how to use Metasploit  
     [*https://www.offensive-security.com/metasploit-unleashed*](https://www.offensive-security.com/metasploit-unleashed/)*/*
+    
+Windows Privledge Escalation
+========================================================================================================
+
+-   Fuzzy Security
+    [*http://www.fuzzysecurity.com/tutorials/16.html*](http://www.fuzzysecurity.com/tutorials/16.html)
+    
+-   Fuzzy Security
+    [*http://www.fuzzysecurity.com/tutorials/16.html*](http://www.fuzzysecurity.com/tutorials/16.html)
+    
+-   Fuzzy Security
+    [*http://www.fuzzysecurity.com/tutorials/16.html*](http://www.fuzzysecurity.com/tutorials/16.html)
+    
+-   Fuzzy Security
+    [*http://www.fuzzysecurity.com/tutorials/16.html*](http://www.fuzzysecurity.com/tutorials/16.html)
+    
+-   Fuzzy Security
+    [*http://www.fuzzysecurity.com/tutorials/16.html*](http://www.fuzzysecurity.com/tutorials/16.html)
+    
