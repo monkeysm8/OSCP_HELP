@@ -646,10 +646,11 @@ Information Gathering & Vulnerability Scanning
       -   Uniscan directory finder:  
           `uniscan -qweds -u <http://vm/>`
 
-      -   Wfuzz - The web brute forcer  
+      -   Wfuzz - The web brute forcer
           `wfuzz -c -w /usr/share/wfuzz/wordlist/general/megabeast.txt $ip:60080/?FUZZ=test  `
           `wfuzz -c --hw 114 -w /usr/share/wfuzz/wordlist/general/megabeast.txt $ip:60080/?page=FUZZ  `
           `wfuzz -c -w /usr/share/wfuzz/wordlist/general/common.txt "$ip:60080/?page=mailer&mail=FUZZ"`
+          `wfuzz -c -w /usr/share/seclists/Discovery/Web_Content/common.txt --hc 404 $ip/FUZZ`
 
 <!-- -->
 
