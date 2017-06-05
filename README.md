@@ -111,6 +111,14 @@ Kali Linux
         frequency  
         `cat access.log | cut -d " " -f 1 | sort | uniq -c | sort -urn`
 
+-   Decoding using Kali
+
+    -   Decode Base64 Encoded Values
+        `echo "QWxhZGRpbjpvcGVuIHNlc2FtZQ==" | base64 --decode`
+
+    -   Decode Hexidecimal Encoded Values  
+        `echo "46 4c 34 36 5f 33 3a 32 396472796 63637756 8656874 327231646434 717070756 5793437 347 3767879610a" | xxd -r -ps`
+
 -   Netcat - Read and write TCP and UDP Packets
 
     -   Connect to a POP3 mail server  
