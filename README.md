@@ -301,6 +301,9 @@ Information Gathering & Vulnerability Scanning
 
  -   Netcat port Scanning  
      `nc -nvv -w 1 -z $ip 3388-3390`
+     
+ -   Discover active IPs usign ARP on the network:
+     `arp-scan $ip/24`
 
  -   Discover who else is on the network  
      `netdiscover`
