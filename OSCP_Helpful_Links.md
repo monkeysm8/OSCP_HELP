@@ -135,6 +135,12 @@ Essentials
 
 -   Metasploit Unleashed - free course on how to use Metasploit  
     [*https://www.offensive-security.com/metasploit-unleashed*](https://www.offensive-security.com/metasploit-unleashed/)*/*
+
+-   0Day Security Enumeration Guide
+    [*http://www.0daysecurity.com/penetration-testing/enumeration.html*](http://www.0daysecurity.com/penetration-testing/enumeration.html)
+
+-   Github IO Book - Pen Testing Methodology  
+    [*https://monkeysm8.gitbooks.io/pentesting-methodology/*](https://monkeysm8.gitbooks.io/pentesting-methodology/)
     
 Windows Privledge Escalation
 ========================================================================================================
