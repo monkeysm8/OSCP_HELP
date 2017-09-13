@@ -157,7 +157,7 @@ Kali Linux
             `tcp.port eq 25 or icmp`
         
     -   Show only traffic in the LAN (192.168.x.x), between workstations and servers -- no Internet:
-    `ip.src==192.168.0.0/16 and ip.dst==192.168.0.0/16`
+        `ip.src==192.168.0.0/16 and ip.dst==192.168.0.0/16`
         
     -   Filter by a protocol ( e.g. SIP ) and filter out unwanted IPs:
         `ip.src != xxx.xxx.xxx.xxx && ip.dst != xxx.xxx.xxx.xxx && sip`
