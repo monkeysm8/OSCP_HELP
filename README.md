@@ -154,7 +154,6 @@ Kali Linux
 
 -   Wireshark
     -   Show only SMTP (port 25) and ICMP traffic:
-            
             `tcp.port eq 25 or icmp`
         
     -   Show only traffic in the LAN (192.168.x.x), between workstations and servers -- no Internet:
