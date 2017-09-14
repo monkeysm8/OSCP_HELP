@@ -1123,6 +1123,9 @@ File Transfers
         scp username1@source_host:directory1/filename1 username2@destination_host:directory2/filename2
         
         scp localfile username@$ip:~/Folder/
+        
+        scp Linux_Exploit_Suggester.pl bob@192.168.1.10:~
+        
 
     -   Webdav with Davtest- Some sysadmins are kind enough to enable the PUT method - This tool will auto upload a backdoor
     
