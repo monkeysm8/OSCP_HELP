@@ -1830,6 +1830,13 @@ apt-get install pocl-opencl-icd
    
    `hashcat --force -m 500 -a 0 -o found1.txt --remove puthasheshere.hash /usr/share/wordlists/rockyou.txt`
    
+   Wordpress sample hash: $P$B55D6LjfHDkINU5wF.v2BuuzO0/XPk/
+   
+   Wordpress clear text: test
+   
+   Hashcat example cracking Wordpress passwords using rockyou:
+   
+  `hashcat --force -m 400 -a 0 -o found1.txt --remove wphash.hash /usr/share/wordlists/rockyou.txt`
 
     -   Sample Hashes  
         [*http://openwall.info/wiki/john/sample-hashes*](http://openwall.info/wiki/john/sample-hashes)
