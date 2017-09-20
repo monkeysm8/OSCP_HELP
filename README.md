@@ -1190,6 +1190,9 @@ File Transfers
 Privilege Escalation
 ==================================================================================================================
 
+*Password reuse is your friend.  The OSCP labs are true to life, in the way that the users will reuse passwords across different services and even different boxes. Maintain a list of cracked passwords and test them on new machines you encounter.*
+
+
 -   Linux Privilege Escalation
     ------------------------------------------------------------------------------------------------------------------------
 
@@ -2167,6 +2170,27 @@ apt-get install pocl-opencl-icd
     -   Staged - sent in two parts  
         Not have enough buffer space  
         Or need to bypass antivirus
+ 
+ -   MS 17-010
+
+    -   You may find some boxes that are vulnerable to MS17-010 (AKA. EternalBlue).  Although, not offically part of the indended course, this exploit can be leveraged to gain SYSTEM level access to a Windows box.  I have never had much luck using the built in Metasploit EternalBlue module.  I found that the elevenpaths version works much more relabily. Here are the instructions to install it taken from the following YouTube video:
+    https://www.youtube.com/watch?v=4OHLor9VaRI
+    
+    ```
+      1. First step is to configure the Kali to work with wine 32bit
+      dpkg --add-architecture i386 && apt-get update && apt-get install wine32
+      rm -r ~/.wine
+      wine cmd.exe
+      exit
+      
+      2. Download the exploit repostory
+      https://github.com/ElevenPaths/Eternalblue-Doublepulsar-Metasploit
+      
+      3. Move the exploit to /usr /share /metasploit-framework /modules /exploits /windows /smb
+
+      4. Start metasploit console
+```
+       
 
 -   Experimenting with Meterpreter
 
