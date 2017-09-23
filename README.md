@@ -1366,7 +1366,7 @@ Handy exploits:
 
 -   Windows privledge escalation exploits are often written in Python. So, it is necessary to compile the using pyinstaller.py into an executable and upload them to the remote server.
 
-         pip install pyinstaller
+         pip install pyinstaller dis3
          wget -O exploit.py <http://www.exploit-db.com/download/31853>  
          python pyinstaller.py --onefile exploit.py
 
