@@ -43,13 +43,13 @@ Kali Linux Offensive Security Certified Professional Playbook
 Kali Linux
 ========================================================================================================
 
--   Set the Target IP Address to the $ip system variable  
+-   Set the Target IP Address to the `$ip` system variable  
     `export ip=192.168.1.100`
 
 -   Find the location of a file  
     `locate sbd.exe`
 
--   Search through directories in the $PATH environment variable  
+-   Search through directories in the `$PATH` environment variable  
     `which sbd`
 
 -   Find a search for a file that contains a specific string in it’s
@@ -67,7 +67,14 @@ Kali Linux
 
 -   Start a service  
     `systemctl start ssh  `
+    
     `systemctl start apache2`
+
+-   Have a service start at boot  
+    `systemctl enable ssh`
+
+-   Stop a service  
+    `systemctl stop ssh`
 
 -   Unzip a gz file  
     `gunzip access.log.gz`
@@ -76,19 +83,13 @@ Kali Linux
     `tar -xzvf file.tar.gz`
 
 -   Search command history  
-    `history | grep phrase\_to\_search\_for`
-
--   Have a service start at boot  
-    `systemctl enable ssh`
-
--   Stop a service  
-    `systemctl stop ssh`
+    `history | grep phrase_to_search_for`
 
 -   Download a webpage  
-    `wget [www.cisco.com](http://www.cisco.com)`
+    `wget http://www.cisco.com`
 
 -   Open a webpage  
-    `curl [www.cisco.com](http://www.cisco.com)`
+    `curl http://www.cisco.com`
 
 -   String manipulation
 
@@ -96,7 +97,8 @@ Kali Linux
         `wc index.html`
 
     -   Get the start or end of a file  
-        `head index.html  `
+        `head index.html`
+        
         `tail index.html`
 
     -   Extract all the lines that contain a string  
@@ -125,6 +127,9 @@ Kali Linux
         `echo "46 4c 34 36 5f 33 3a 32 396472796 63637756 8656874 327231646434 717070756 5793437 347 3767879610a" | xxd -r -ps`
 
 -   Netcat - Read and write TCP and UDP Packets
+
+    -   Download Netcat for Windows (handy for creating reverse shells and transfering files on windows systems):
+        [https://joncraton.org/blog/46/netcat-for-windows/](https://joncraton.org/blog/46/netcat-for-windows/)
 
     -   Connect to a POP3 mail server  
         `nc -nv $ip 110`
