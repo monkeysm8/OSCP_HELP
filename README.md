@@ -124,7 +124,7 @@ Kali Linux
         `echo "QWxhZGRpbjpvcGVuIHNlc2FtZQ==" | base64 --decode`
 
     -   Decode Hexidecimal Encoded Values  
-        `echo "46 4c 34 36 5f 33 3a 32 396472796 63637756 8656874 327231646434 717070756 5793437 347 3767879610a" | xxd -r -ps`
+        `echo "46 4c 34 36 5f 33 3a 32 396472796 63637756 8656874" | xxd -r -ps`
 
 -   Netcat - Read and write TCP and UDP Packets
 
@@ -167,7 +167,8 @@ Kali Linux
 
 -   Wireshark
     -   Show only SMTP (port 25) and ICMP traffic:
-            `tcp.port eq 25 or icmp`
+    
+        `tcp.port eq 25 or icmp`
         
     -   Show only traffic in the LAN (192.168.x.x), between workstations and servers -- no Internet:
         
@@ -179,34 +180,50 @@ Kali Linux
         
     -   Some commands are equal
         
-        `ip.addr == 10.43.54.65`
+        `ip.addr == xxx.xxx.xxx.xxx`
+        
          Equals
         
-        `ip.src == 10.43.54.65 or ip.dst == 10.43.54.65 `
+        `ip.src == xxx.xxx.xxx.xxx or ip.dst == xxx.xxx.xxx.xxx `
 
-        ` ip.addr != 10.43.54.65`
+        ` ip.addr != xxx.xxx.xxx.xxx`
+        
          Equals
         
-        `ip.src != 10.43.54.65 or ip.dst != 10.43.54.65`
+        `ip.src != xxx.xxx.xxx.xxx or ip.dst != xxx.xxx.xxx.xxx`
 
 -   Tcpdump
 
     -   Display a pcap file  
-       `tcpdump -r password\_cracking\_filtered.pcap`
+       `tcpdump -r passwordz.pcap`
 
     -   Display ips and filter and sort  
-        `tcpdump -n -r password\_cracking\_filtered.pcap | awk -F" " '{print $3}' | sort -u | head`
+        `tcpdump -n -r passwordz.pcap | awk -F" " '{print $3}' | sort -u | head`
 
     -   Grab a packet capture on port 80  
         `tcpdump tcp port 80 -w output.pcap -i eth0`
 
     -   Check for ACK or PSH flag set in a TCP packet  
-        `tcpdump -A -n 'tcp\[13\] = 24' -r password\_cracking\_filtered.pcap`
+        `tcpdump -A -n 'tcp[13] = 24' -r passwordz.pcap`
 
--   IPTables deny traffic to ports except for Local Loopback
+-   IPTables 
 
-    -   `iptables -A INPUT -p tcp --destination-port 13327 \\! -d $ip -j DROP  `
-        `iptables -A INPUT -p tcp --destination-port 4444 \\! -d $ip -j DROP`
+    -   Deny traffic to ports except for Local Loopback
+
+        `iptables -A INPUT -p tcp --destination-port 13327 \! -d $ip -j DROP  `
+    
+        `iptables -A INPUT -p tcp --destination-port 9991 \! -d $ip -j DROP`
+
+    -   Clear ALL IPTables firewall rules
+    
+            iptables -P INPUT ACCEPT
+            iptables -P FORWARD ACCEPT
+            iptables -P OUTPUT ACCEPT
+            iptables -t nat -F
+            iptables -t mangle -F
+            iptables -F
+            iptables -X
+            iptables -t raw -F iptables -t raw -X
 
 Information Gathering & Vulnerability Scanning
 ===================================================================================================================================
@@ -218,24 +235,24 @@ Information Gathering & Vulnerability Scanning
 
     -   Google search to find website sub domains  
         `site:microsoft.com`
-        `site:[www.microsoft.com](http://www.microsoft.com)`
 
     -   Google filetype, and intitle  
-        `intitle:”netbotz appliance” “OK” -filetype:pdf`
+        `intitle:"netbotz appliance" "OK" -filetype:pdf`
 
     -   Google inurl  
-        `inurl:”level/15/sexec/-/show”`
+        `inurl:"level/15/sexec/-/show"`
 
     -   Google Hacking Database:  
         https://www.exploit-db.com/google-hacking-database/
 
 -   SSL Certificate Testing  
-    [*https://www.ssllabs.com/ssltest/analyze.html*](https://www.ssllabs.com/ssltest/analyze.html)
+    [https://www.ssllabs.com/ssltest/analyze.html](https://www.ssllabs.com/ssltest/analyze.html)
 
 -   Email Harvesting
 
     -   Simply Email  
         `git clone https://github.com/killswitch-GUI/SimplyEmail.git  `
+        
         `./SimplyEmail.py -all -e TARGET-DOMAIN`
 
 -   Netcraft
@@ -245,6 +262,7 @@ Information Gathering & Vulnerability Scanning
 
 -   Whois Enumeration  
     `whois domain-name-here.com  `
+    
     `whois $ip`
 
 -   Banner Grabbing
@@ -258,9 +276,13 @@ Information Gathering & Vulnerability Scanning
 -   Recon-ng - full-featured web reconnaissance framework written in Python
 
     -   `cd /opt; git clone https://LaNMaSteR53@bitbucket.org/LaNMaSteR53/recon-ng.git  `
+    
         `cd /opt/recon-ng  `
+        
         `./recon-ng  `
+        
         `show modules  `
+        
         `help`
 
 -   Active Information Gathering
@@ -271,6 +293,9 @@ Information Gathering & Vulnerability Scanning
 
 -   DNS Enumeration
 
+    -   NMAP DNS Hostnames Lookup
+        `nmap -F --dns-server <dns server ip> <target ip range>`
+        
     -   Host Lookup  
         `host -t ns megacorpone.com`
 
@@ -288,10 +313,13 @@ Information Gathering & Vulnerability Scanning
 
     -   DNS Zone Transfers  
         Windows DNS zone transfer  
+        
         `nslookup -> set type=any -> ls -d blah.com  `
+        
         Linux DNS zone transfer  
+        
         `dig axfr blah.com @ns1.blah.com`
-
+        
     -   Dnsrecon DNS Brute Force  
         `dnsrecon -d TARGET -D /usr/share/wordlists/dnsmap.txt -t std --xml ouput.xml`
 
