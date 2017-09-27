@@ -157,3 +157,7 @@ Windows Privledge Escalation
 -   Elevating Privileges to Admin and Further
     https://hackmag.com/security/elevating-privileges-to-administrative-and-further/
     
+-   Transfer files to windows machines
+    https://blog.netspi.com/15-ways-to-download-a-file/
+    
+    
