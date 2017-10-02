@@ -19,7 +19,7 @@ Kali Linux Offensive Security Certified Professional Playbook
 ***UPDATE: October 2, 2017***
 Thanks for all the Stars! Wrote my OSCP exam last night, did not pass sadly ... but I recorded a stop motion video of my failed attempt. TRY HARDER!
 
-[![TRY HARDER!!!!](https://www.youtube.com/watch?v=HBMZWl9zcsc)](https://www.youtube.com/watch?v=HBMZWl9zcsc)
+![https://www.youtube.com/watch?v=HBMZWl9zcsc](https://www.youtube.com/watch?v=HBMZWl9zcsc)
 
 The good news is that I will be learning more and adding more content to this guide :D
 
