@@ -531,7 +531,7 @@ Information Gathering & Vulnerability Scanning
 
     -   Manual Null Session Testing
     
-        Windows: `net use \\\\$ip\\IPC$ "" /u:""`
+        Windows: `net use \\$ip\IPC$ "" /u:""`
         
         Linux: `smbclient -L //$ip`
         
