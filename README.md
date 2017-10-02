@@ -312,44 +312,6 @@ Information Gathering & Vulnerability Scanning
 <!-- -->
 
 
--   DNS Enumeration
-
-    -   NMAP DNS Hostnames Lookup
-        `nmap -F --dns-server <dns server ip> <target ip range>`
-        
-    -   Host Lookup  
-        `host -t ns megacorpone.com`
-
-    -   Reverse Lookup Brute Force - find domains in the same range  
-        `for ip in $(seq 155 190);do host 50.7.67.$ip;done |grep -v "not found"`
-
-    -   Perform DNS IP Lookup  
-        `dig a domain-name-here.com @nameserver`
-
-    -   Perform MX Record Lookup  
-        `dig mx domain-name-here.com @nameserver`
-
-    -   Perform Zone Transfer with DIG  
-        `dig axfr domain-name-here.com @nameserver`
-
-    -   DNS Zone Transfers  
-        Windows DNS zone transfer  
-        
-        `nslookup -> set type=any -> ls -d blah.com  `
-        
-        Linux DNS zone transfer  
-        
-        `dig axfr blah.com @ns1.blah.com`
-        
-    -   Dnsrecon DNS Brute Force  
-        `dnsrecon -d TARGET -D /usr/share/wordlists/dnsmap.txt -t std --xml ouput.xml`
-
-    -   Dnsrecon DNS List of megacorp  
-        `dnsrecon -d megacorpone.com -t axfr`
-
-    -   DNSEnum  
-        `dnsenum zonetransfer.me`
-
 -   Port Scanning
     -----------------------------------------------------------------------------------------------------------
 *Subnet Reference Table*
@@ -448,6 +410,44 @@ Information Gathering & Vulnerability Scanning
 -   Enumeration
     -----------
 
+-   DNS Enumeration
+
+    -   NMAP DNS Hostnames Lookup
+        `nmap -F --dns-server <dns server ip> <target ip range>`
+        
+    -   Host Lookup  
+        `host -t ns megacorpone.com`
+
+    -   Reverse Lookup Brute Force - find domains in the same range  
+        `for ip in $(seq 155 190);do host 50.7.67.$ip;done |grep -v "not found"`
+
+    -   Perform DNS IP Lookup  
+        `dig a domain-name-here.com @nameserver`
+
+    -   Perform MX Record Lookup  
+        `dig mx domain-name-here.com @nameserver`
+
+    -   Perform Zone Transfer with DIG  
+        `dig axfr domain-name-here.com @nameserver`
+
+    -   DNS Zone Transfers  
+        Windows DNS zone transfer  
+        
+        `nslookup -> set type=any -> ls -d blah.com  `
+        
+        Linux DNS zone transfer  
+        
+        `dig axfr blah.com @ns1.blah.com`
+        
+    -   Dnsrecon DNS Brute Force  
+        `dnsrecon -d TARGET -D /usr/share/wordlists/dnsmap.txt -t std --xml ouput.xml`
+
+    -   Dnsrecon DNS List of megacorp  
+        `dnsrecon -d megacorpone.com -t axfr`
+
+    -   DNSEnum  
+        `dnsenum zonetransfer.me`
+
 -   NMap Enumeration Script List:
 
     -   NMap Discovery  
@@ -456,7 +456,20 @@ Information Gathering & Vulnerability Scanning
     -   Nmap port version detection MAXIMUM power  
         `nmap -vvv -A --reason --script="+(safe or default) and not broadcast" -p <port> <host>`
 
-    -   
+
+-   NFS (Network File System) Enumeration
+
+    -   Show Mountable NFS Shares 
+        `nmap -sV --script=nfs-showmount $ip`
+
+-   RPC (Remote Procedure Call) Enumeration
+
+    -   Connect to an RPC share without a username and password and enumerate privledges
+        `rpcclient --user="" --command=enumprivs -N $ip`
+
+    -   Connect to an RPC share with a username and enumerate privledges
+        `rpcclient --user="<Username>" --command=enumprivs $ip`
+
 
 -   SMB Enumeration
 
@@ -471,6 +484,12 @@ Information Gathering & Vulnerability Scanning
 
     -   Nmap find exposed Netbios servers  
         `nmap -sU --script nbstat.nse -p 137 $ip`
+        
+    -   Nmap all SMB scripts scan
+        `nmap -sV -Pn -vv -p 445 --script='(smb*) and not (brute or broadcast or dos or external or fuzzer)' --script-args=unsafe=1 $ip`
+
+    -   Nmap all SMB scripts authenticated scan
+        `nmap -sV -Pn -vv -p 445  --script-args smbuser=<username>,smbpass=<password> --script='(smb*) and not (brute or broadcast or dos or external or fuzzer)' --script-args=unsafe=1 $ip`
 
     -   SMB Enumeration Tools  
         `nmblookup -A $ip  `
@@ -483,32 +502,25 @@ Information Gathering & Vulnerability Scanning
         `smbclient -L //$ip`
 
     -   Nmap Scan for Open SMB Shares  
-        `nmap -T4 -v -oA shares --script smb-enum-shares --script-args smbuser=username,smbpass=password -p445 $ip/24`
+        `nmap -T4 -v -oA shares --script smb-enum-shares --script-args smbuser=username,smbpass=password -p445 192.168.10.0/24`
 
     -   Nmap scans for vulnerable SMB Servers  
         `nmap -v -p 445 --script=smb-check-vulns --script-args=unsafe=1 $ip`
 
     -   Nmap List all SMB scripts installed  
-        `ls -l /usr/share/nmap/scripts/smb\*`
+        `ls -l /usr/share/nmap/scripts/smb*`
 
     -   Enumerate SMB Users
-
-        -   `nmap -sU -sS --script=smb-enum-users -p U:137,T:139 $ip-14`
-
-        -   `python /usr/share/doc/python-impacket-doc/examples /samrdump.py $ip`
+        `nmap -sU -sS --script=smb-enum-users -p U:137,T:139 $ip-14`
+         OR        
+         `python /usr/share/doc/python-impacket-doc/examples /samrdump.py $ip`
 
     -   RID Cycling - Null Sessions  
-        [*https://www.trustedsec.com/march-2013/new-tool-release-rpc\_enum-rid-cycling-attack/*](https://www.trustedsec.com/march-2013/new-tool-release-rpc_enum-rid-cycling-attack/)
-
-        -   `ridenum.py $ip 500 50000 dict.txt`
-
-        -   `use auxiliary/scanner/smb/smb\_lookupsid`
+        `ridenum.py $ip 500 50000 dict.txt`
 
     -   Manual Null Session Testing
-
-        -   Windows: `net use \\\\$ip\\IPC$ "" /u:""`
-
-        -   Linux: `smbclient -L //$ip`
+        Windows: `net use \\\\$ip\\IPC$ "" /u:""`
+        Linux: `smbclient -L //$ip`
 
 -   SMTP Enumeration - Mail Severs
 
