@@ -14,6 +14,15 @@ Kali Linux Offensive Security Certified Professional Playbook
  **To set this value on the command line use the following syntax:**
  
  **export ip=192.168.1.100**
+ 
+ 
+***UPDATE: October 2, 2017***
+Thanks for all the Stars! Wrote my OSCP exam last night, did not pass sadly ... but I recorded a stop motion video of my failed attempt. TRY HARDER!
+
+https://youtu.be/UYemcxTBMFs
+
+The good news is that I will be learning more and adding more content to this guide :D
+
 
 ## Table of Contents
 - [Kali Linux](#kali-linux)
