@@ -1896,7 +1896,20 @@ Client, Web and Password Attacks
              - Use Tor Socks5 proxy  
                  
                 `sqlmap --tor --tor-type=SOCKS5 --check-tor --dbms=mysql -u "$URL" --dbs`
-                 
+       
+       
+-   **NoSQLMap Examples**
+       You may encounter NoSQL instances like MongoDB in your OSCP journies (`/cgi-bin/mongo/2.2.3/dbparse.py`).  NoSQLMap can help you to automate NoSQLDatabase enumeration. 
+       
+  -   NoSQLMap Installation 
+       
+            git clone https://github.com/codingo/NoSQLMap.git
+            cd NoSQLMap/
+            ls
+            pip install couchdb
+            pip install pbkdf2
+            pip install ipcalc
+            python nosqlmap.py --help 
 
 -   Password Attacks
     --------------------------------------------------------------------------------------------------------------
